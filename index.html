@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vixy Labs — Secure · Build · Innovate</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: #0a0f1e;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 220, 180, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+      50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+    }
+
+    .container {
+      text-align: center;
+      padding: 2rem;
+      max-width: 700px;
+      width: 100%;
+      z-index: 1;
+    }
+
+    .logo-wrapper {
+      margin-bottom: 1.5rem;
+      animation: fadeDown 0.8s ease forwards;
+    }
+
+    .logo-wrapper img {
+      width: 180px;
+      height: 180px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 20px rgba(0, 220, 180, 0.3));
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .brand {
+      font-size: 3rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      animation: fadeUp 0.8s ease 0.2s forwards;
+      opacity: 0;
+    }
+
+    .brand span { color: #00dcb4; }
+
+    .tagline {
+      font-size: 0.85rem;
+      font-weight: 300;
+      letter-spacing: 4px;
+      color: #00dcb4;
+      margin-top: 0.5rem;
+      animation: fadeUp 0.8s ease 0.4s forwards;
+      opacity: 0;
+    }
+
+    .divider {
+      width: 60px;
+      height: 2px;
+      background: #00dcb4;
+      margin: 2rem auto;
+      animation: fadeUp 0.8s ease 0.5s forwards;
+      opacity: 0;
+    }
+
+    .coming-soon {
+      font-size: 1rem;
+      font-weight: 300;
+      color: #a0aec0;
+      line-height: 1.8;
+      animation: fadeUp 0.8s ease 0.6s forwards;
+      opacity: 0;
+    }
+
+    .coming-soon strong {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .services {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+      animation: fadeUp 0.8s ease 0.7s forwards;
+      opacity: 0;
+    }
+
+    .service-tag {
+      background: rgba(0, 220, 180, 0.08);
+      border: 1px solid rgba(0, 220, 180, 0.25);
+      color: #00dcb4;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      letter-spacing: 1px;
+      font-weight: 500;
+    }
+
+    .contact {
+      margin-top: 2.5rem;
+      animation: fadeUp 0.8s ease 0.9s forwards;
+      opacity: 0;
+    }
+
+    .contact p {
+      font-size: 0.8rem;
+      color: #4a5568;
+      margin-bottom: 0.5rem;
+      letter-spacing: 1px;
+    }
+
+    .contact a {
+      color: #00dcb4;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      transition: opacity 0.2s;
+    }
+
+    .contact a:hover { opacity: 0.7; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .dots {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .dot {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgba(0, 220, 180, 0.4);
+      border-radius: 50%;
+      animation: float linear infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-10px); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dots" id="dots"></div>
+
+  <div class="container">
+    <div class="logo-wrapper">
+      <img src="logo.png" alt="Vixy Labs Logo" />
+    </div>
+
+    <h1 class="brand">VIXY <span>LABS</span></h1>
+    <p class="tagline">SECURE &nbsp;·&nbsp; BUILD &nbsp;·&nbsp; INNOVATE</p>
+
+    <div class="divider"></div>
+
+    <p class="coming-soon">
+      Something <strong>powerful</strong> is on its way.<br/>
+      We're building a platform where <strong>security meets innovation</strong>.<br/>
+      Stay tuned — big things are coming.
+    </p>
+
+    <div class="services">
+      <span class="service-tag">Penetration Testing</span>
+      <span class="service-tag">Red Teaming</span>
+      <span class="service-tag">Web Development</span>
+      <span class="service-tag">Mobile Apps</span>
+      <span class="service-tag">Security Audits</span>
+      <span class="service-tag">Bug Bounty</span>
+    </div>
+
+    <div class="contact">
+      <p>GET IN TOUCH</p>
+      <a href="mailto:tony@vixylabs.is-a.dev">tony@vixylabs.is-a.dev</a>
+    </div>
+  </div>
+
+  <script>
+    const dotsContainer = document.getElementById('dots');
+    for (let i = 0; i < 40; i++) {
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      dot.style.left = Math.random() * 100 + 'vw';
+      dot.style.animationDuration = (Math.random() * 10 + 8) + 's';
+      dot.style.animationDelay = (Math.random() * 10) + 's';
+      dot.style.width = dot.style.height = (Math.random() * 3 + 1) + 'px';
+      dotsContainer.appendChild(dot);
+    }
+  </script>
+
+</body>
+</html>
