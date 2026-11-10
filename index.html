@@ -1,235 +1,1094 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Vixy Labs — Secure · Build · Innovate</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      background-color: #0a0f1e;
-      color: #ffffff;
-      font-family: 'Inter', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      top: -200px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(0, 220, 180, 0.08) 0%, transparent 70%);
-      pointer-events: none;
-      animation: pulse 4s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
-      50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
-    }
-
-    .container {
-      text-align: center;
-      padding: 2rem;
-      max-width: 700px;
-      width: 100%;
-      z-index: 1;
-    }
-
-    .logo-wrapper {
-      margin-bottom: 1.5rem;
-      animation: fadeDown 0.8s ease forwards;
-    }
-
-    .logo-wrapper img {
-  width: 180px;
-  height: 180px;
-  object-fit: contain;
-  border-radius: 50%;
-  filter: drop-shadow(0 0 20px rgba(0, 220, 180, 0.3));
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<title>Vixy Labs — Secure. Build. Innovate.</title>
+<link rel="icon" href="logo.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --n950:#050811;--n900:#0a0f1e;--n850:#0e152a;--n800:#131c36;--n700:#1b2649;
+  --teal:#00dcb4;--sky:#38bdf8;
+  --t10:rgba(0,220,180,.10);--t20:rgba(0,220,180,.20);--t30:rgba(0,220,180,.30);
+  --t40:rgba(0,220,180,.40);--tglow:rgba(0,220,180,.45);
+  --s50:#f8fafc;--s100:#f1f5f9;--s200:#e2e8f0;--s300:#94a3b8;--s400:#64748b;--s500:#475569;--s600:#334155;
+  --head:'Space Grotesk',sans-serif;--body:'Plus Jakarta Sans',sans-serif;--mono:'JetBrains Mono',monospace;
 }
+html{scroll-behavior:smooth;color-scheme:dark}
+body{background:var(--n900);color:var(--s100);font-family:var(--body);overflow-x:hidden}
+::selection{background:var(--teal);color:var(--n900)}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:var(--n900)}
+::-webkit-scrollbar-thumb{background:var(--n700);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--teal)}
 
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+/* CURSOR */
+.cursor-glow{pointer-events:none;position:fixed;top:0;left:0;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(0,220,180,.14) 0%,rgba(0,220,180,.05) 40%,transparent 70%);filter:blur(24px);z-index:35;transition:opacity .3s;will-change:transform;opacity:0}
+.cursor-glow.hov{width:620px;height:620px;background:radial-gradient(circle,rgba(0,220,180,.2) 0%,rgba(0,220,180,.08) 45%,transparent 70%)}
+.cursor-dot{pointer-events:none;position:fixed;top:0;left:0;width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 10px rgba(0,220,180,.9),0 0 20px rgba(0,220,180,.5);z-index:45;opacity:0;will-change:transform;transition:opacity .2s}
+.cursor-dot.hov{background:#fff;box-shadow:0 0 14px rgba(0,220,180,1),0 0 28px rgba(0,220,180,.8)}
+@media(hover:none),(pointer:coarse){.cursor-glow,.cursor-dot{display:none!important}}
 
-    .brand {
-      font-size: 3rem;
-      font-weight: 900;
-      letter-spacing: 2px;
-      animation: fadeUp 0.8s ease 0.2s forwards;
-      opacity: 0;
-    }
+/* SCROLL PROGRESS */
+#spbar-wrap{position:fixed;top:0;left:0;right:0;z-index:999;pointer-events:none}
+#spbar-track{height:2px;width:100%;background:rgba(27,38,73,.4)}
+#spbar{height:100%;width:0%;background:linear-gradient(to right,rgba(0,220,180,.5),var(--teal),var(--sky));box-shadow:0 0 12px rgba(0,220,180,.8);transition:width .08s linear}
+#sp-hud{max-width:1280px;margin:0 auto;padding:0 1.5rem;display:flex;justify-content:flex-end}
+#sp-label{margin-top:10px;padding:.18rem .6rem;border-radius:4px;background:rgba(5,8,17,.8);border:1px solid rgba(27,38,73,.6);backdrop-filter:blur(8px);font-family:var(--mono);font-size:.62rem;color:var(--s400);display:flex;align-items:center;gap:.5rem}
+#sp-label .sl{color:var(--teal);font-weight:600}
+#sp-label .sp{color:var(--s300)}
 
-    .brand span { color: #00dcb4; }
+/* CYBER GRID */
+.cyber-grid{background-size:40px 40px;background-image:linear-gradient(to right,rgba(0,220,180,.04) 1px,transparent 1px),linear-gradient(to bottom,rgba(0,220,180,.04) 1px,transparent 1px)}
 
-    .tagline {
-      font-size: 0.85rem;
-      font-weight: 300;
-      letter-spacing: 4px;
-      color: #00dcb4;
-      margin-top: 0.5rem;
-      animation: fadeUp 0.8s ease 0.4s forwards;
-      opacity: 0;
-    }
+/* NAV */
+header{position:sticky;top:0;z-index:500;width:100%;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);background:rgba(10,15,30,.9);border-bottom:1px solid rgba(27,38,73,.8);transition:all .3s}
+.nav-inner{max-width:1280px;margin:0 auto;padding:0 1.5rem;height:72px;display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.nav-brand{display:flex;align-items:center;gap:.75rem;text-decoration:none;flex-shrink:0}
+.nav-brand-img{width:40px;height:40px;border-radius:8px;overflow:hidden;border:1px solid rgba(0,220,180,.4);background:var(--n850);padding:2px;box-shadow:0 0 15px -3px var(--t30);transition:border-color .2s}
+.nav-brand:hover .nav-brand-img{border-color:var(--teal)}
+.nav-brand-img img{width:100%;height:100%;object-fit:cover}
+.nav-brand-col{display:flex;flex-direction:column;line-height:1}
+.nav-brand-name{font-family:var(--head);font-weight:800;font-size:1.1rem;letter-spacing:-.02em;color:#fff}
+.nav-brand-name span{color:var(--teal);margin-left:1px}
+.nav-brand-sub{font-family:var(--mono);font-size:.55rem;letter-spacing:.12em;color:var(--s400);margin-top:3px}
+.nav-links{display:flex;align-items:center;gap:2rem;flex:1;justify-content:center}
+.nav-links a{font-size:.85rem;font-weight:500;color:var(--s300);text-decoration:none;white-space:nowrap;transition:color .2s}
+.nav-links a:hover{color:var(--teal)}
+.nav-actions{display:flex;align-items:center;gap:.75rem;flex-shrink:0}
+.nav-gh{padding:.5rem;color:var(--s400);border-radius:8px;text-decoration:none;transition:color .2s,background .2s;font-size:1.1rem}
+.nav-gh:hover{color:#fff;background:var(--n800)}
+.nav-cta-btn{padding:.5rem 1rem;font-family:var(--head);font-weight:600;font-size:.78rem;color:var(--n900);background:var(--teal);border:none;border-radius:8px;cursor:pointer;white-space:nowrap;transition:background .15s,box-shadow .15s;box-shadow:0 0 20px -5px var(--t40)}
+.nav-cta-btn:hover{background:#1ee8c2;box-shadow:0 0 28px -3px var(--tglow)}
+.nav-hbg{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+.nav-hbg span{display:block;width:22px;height:2px;background:var(--s300);border-radius:2px;transition:.3s}
+.nav-hbg.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-hbg.open span:nth-child(2){opacity:0}
+.nav-hbg.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mob-menu{display:none;position:fixed;inset:0;z-index:490;background:rgba(5,8,17,.98);flex-direction:column;align-items:center;justify-content:center;gap:2rem}
+.mob-menu.open{display:flex}
+.mob-menu a{font-family:var(--head);font-weight:700;font-size:1.4rem;color:#fff;text-decoration:none;transition:color .2s}
+.mob-menu a:hover{color:var(--teal)}
 
-    .divider {
-      width: 60px;
-      height: 2px;
-      background: #00dcb4;
-      margin: 2rem auto;
-      animation: fadeUp 0.8s ease 0.5s forwards;
-      opacity: 0;
-    }
+/* HERO */
+#hero{position:relative;padding-top:5rem;padding-bottom:5rem;overflow:hidden}
+.hero-wrap{max-width:1280px;margin:0 auto;padding:0 1.5rem}
+.hero-glows .g1{position:absolute;top:25%;left:50%;transform:translate(-50%,-50%);width:700px;height:500px;background:var(--t10);filter:blur(140px);border-radius:50%;pointer-events:none}
+.hero-glows .g2{position:absolute;top:-6rem;right:5%;width:400px;height:400px;background:rgba(0,220,180,.05);filter:blur(120px);border-radius:50%;pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:3rem}
+.hero-eyebrow{display:flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.7rem;color:var(--s400);letter-spacing:.08em;margin-bottom:1.5rem}
+.hero-eyebrow .tc{color:var(--teal);font-weight:700}
+.hero-eyebrow .sep{color:var(--s600)}
+.hero-eyebrow .dot{width:6px;height:6px;background:var(--teal);border-radius:50%;animation:pdot 2s ease-in-out infinite;flex-shrink:0}
+@keyframes pdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.25;transform:scale(.55)}}
+.hero-h1{font-family:var(--head);font-weight:800;font-size:clamp(2.2rem,4.5vw,4.2rem);line-height:1.08;letter-spacing:-.04em;color:#fff;margin-bottom:1.3rem}
+.hero-h1 .teal{color:var(--teal)}
+.hero-desc{font-size:clamp(.88rem,1.3vw,1.05rem);color:var(--s300);line-height:1.75;max-width:530px;margin-bottom:2rem}
+.hero-actions{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.btn-primary{font-family:var(--head);font-weight:700;font-size:.88rem;color:var(--n900);background:var(--teal);border:none;padding:.8rem 1.6rem;border-radius:8px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:background .15s,box-shadow .15s,transform .12s;box-shadow:0 0 25px -5px var(--t30);white-space:nowrap}
+.btn-primary:hover{background:#1ee8c2;box-shadow:0 0 35px -2px var(--tglow);transform:translateY(-1px)}
+.btn-secondary{font-family:var(--head);font-weight:500;font-size:.88rem;color:var(--s200);background:var(--n850);border:1px solid var(--n700);padding:.8rem 1.6rem;border-radius:8px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:border-color .15s,background .15s,transform .12s;white-space:nowrap}
+.btn-secondary:hover{border-color:rgba(0,220,180,.5);background:#131c36;transform:translateY(-1px)}
+.hero-trust{padding-top:1.5rem;border-top:1px solid rgba(27,38,73,.6);display:flex;flex-wrap:wrap;gap:1.5rem}
+.trust-item{display:flex;align-items:center;gap:.45rem;font-family:var(--mono);font-size:.65rem;color:var(--s400);letter-spacing:.04em}
+.trust-dot{width:6px;height:6px;background:var(--teal);border-radius:50%;flex-shrink:0}
+.hero-right{display:flex;align-items:center;justify-content:center}
+.morph-wrap{position:relative;width:clamp(260px,32vw,420px);aspect-ratio:1}
+.morph-wrap img{width:100%;height:100%;object-fit:contain;animation:morph 9s ease-in-out infinite;filter:drop-shadow(0 0 36px rgba(0,220,180,.22)) drop-shadow(0 0 80px rgba(0,220,180,.08))}
+@keyframes morph{0%,100%{transform:scale(1) translateY(0);filter:drop-shadow(0 0 32px rgba(0,220,180,.18)) drop-shadow(0 0 72px rgba(0,220,180,.07))}25%,75%{transform:scale(1.04) translateY(-8px);filter:drop-shadow(0 0 55px rgba(0,220,180,.38)) drop-shadow(0 0 110px rgba(0,220,180,.17))}50%{transform:scale(1.08) translateY(-16px);filter:drop-shadow(0 0 72px rgba(0,220,180,.52)) drop-shadow(0 0 150px rgba(0,220,180,.22))}}
+.mring{position:absolute;border-radius:50%;border:1px solid rgba(27,38,73,.8)}
+.mring1{inset:-18px;animation:rspin 22s linear infinite}
+.mring2{inset:-36px;border-color:rgba(27,38,73,.5);animation:rspin 36s linear infinite reverse}
+@keyframes rspin{to{transform:rotate(360deg)}}
+.mc{position:absolute;width:14px;height:14px}
+.mc-tl{top:-36px;left:-36px;border-top:2px solid var(--teal);border-left:2px solid var(--teal)}
+.mc-tr{top:-36px;right:-36px;border-top:2px solid var(--teal);border-right:2px solid var(--teal)}
+.mc-bl{bottom:-36px;left:-36px;border-bottom:2px solid var(--teal);border-left:2px solid var(--teal)}
+.mc-br{bottom:-36px;right:-36px;border-bottom:2px solid var(--teal);border-right:2px solid var(--teal)}
+.hero-kpi{margin-top:5rem;padding-top:2.5rem;border-top:1px solid var(--n700);display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+.kpi-val{font-family:var(--mono);font-weight:800;font-size:clamp(1.4rem,2.5vw,2rem);color:#fff;letter-spacing:-.03em;line-height:1}
+.kpi-lbl{font-size:.68rem;font-weight:700;color:var(--teal);letter-spacing:.08em;text-transform:uppercase;margin:.3rem 0 .2rem}
+.kpi-desc{font-size:.7rem;color:var(--s400);line-height:1.5}
+.hero-logo-badge{margin-bottom:1.2rem;display:flex;align-items:center;justify-content:space-between;padding:.75rem;border-radius:12px;background:rgba(14,22,38,.8);border:1px solid var(--n700);backdrop-filter:blur(8px)}
+.hlb-info{display:flex;align-items:center;gap:.75rem}
+.hlb-img{position:relative;width:48px;height:48px;border-radius:8px;overflow:hidden;border:1px solid rgba(0,220,180,.5);padding:2px;background:var(--n950)}
+.hlb-img img{width:100%;height:100%;object-fit:cover}
+.hlb-title{font-size:.85rem;font-weight:700;color:#fff}
+.hlb-sub{font-family:var(--mono);font-size:.65rem;color:var(--s400);margin-top:2px}
+.hlb-badge{display:flex;align-items:center;gap:.4rem;font-family:var(--mono);font-size:.65rem;color:var(--teal);background:var(--t10);border:1px solid rgba(0,220,180,.3);padding:.25rem .6rem;border-radius:4px;white-space:nowrap}
+.hlb-pulse{width:7px;height:7px;border-radius:50%;background:var(--teal);animation:pdot 2s ease-in-out infinite}
 
-    .coming-soon {
-      font-size: 1rem;
-      font-weight: 300;
-      color: #a0aec0;
-      line-height: 1.8;
-      animation: fadeUp 0.8s ease 0.6s forwards;
-      opacity: 0;
-    }
+/* SECTION SHARED */
+.sec-wrap{max-width:1280px;margin:0 auto;padding:0 1.5rem}
+.sec-eye{font-family:var(--mono);font-size:.68rem;color:var(--teal);letter-spacing:.1em;display:flex;align-items:center;gap:.5rem;margin-bottom:.8rem}
+.sec-eye span.sep{color:var(--s600)}
+.sec-h2{font-family:var(--head);font-weight:800;font-size:clamp(1.8rem,3vw,2.8rem);letter-spacing:-.04em;line-height:1.1;color:#fff;margin-bottom:.8rem}
+.sec-sub{color:var(--s300);font-size:.95rem;line-height:1.75;max-width:580px;margin-bottom:3rem}
+.seam{height:1px;background:linear-gradient(to right,transparent,rgba(27,38,73,.8),transparent)}
 
-    .coming-soon strong {
-      color: #ffffff;
-      font-weight: 600;
-    }
+/* SERVICES */
+#services{padding:5rem 0}
+.svc-header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1.5rem;margin-bottom:3rem}
+.svc-filter{display:flex;align-items:center;gap:.35rem;padding:.35rem;background:var(--n850);border:1px solid var(--n700);border-radius:10px;flex-shrink:0;flex-wrap:wrap}
+.sfc-btn{padding:.4rem .8rem;font-size:.72rem;font-weight:500;border-radius:6px;border:none;cursor:pointer;background:transparent;color:var(--s400);transition:.2s;white-space:nowrap}
+.sfc-btn:hover{color:#fff}
+.sfc-btn.active{background:var(--teal);color:var(--n900);font-weight:700}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.svc-card{display:flex;flex-direction:column;justify-content:space-between;padding:1.5rem;border-radius:12px;background:rgba(14,22,38,.8);border:1px solid var(--n700);transition:border-color .2s,box-shadow .2s,transform .2s;cursor:default;position:relative;overflow:hidden}
+.svc-card:hover{border-color:rgba(0,220,180,.5);box-shadow:0 10px 30px -10px rgba(0,220,180,.25);transform:translateY(-2px)}
+.svc-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.svc-icon-box{width:48px;height:48px;border-radius:8px;background:var(--n950);border:1px solid var(--n700);display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:border-color .2s}
+.svc-card:hover .svc-icon-box{border-color:rgba(0,220,180,.6)}
+.svc-category{font-family:var(--mono);font-size:.62rem;color:var(--s400);letter-spacing:.04em}
+.svc-title{font-family:var(--head);font-weight:700;font-size:1.1rem;color:#fff;margin-bottom:.6rem;transition:color .2s}
+.svc-card:hover .svc-title{color:var(--teal)}
+.svc-desc{font-size:.82rem;color:var(--s300);line-height:1.65;margin-bottom:1.2rem}
+.svc-outcomes{padding-top:.9rem;border-top:1px solid rgba(27,38,73,.6);margin-bottom:1.2rem}
+.svc-out-label{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.06em;color:var(--s400);display:block;margin-bottom:.5rem}
+.svc-out-item{display:flex;align-items:flex-start;gap:.5rem;font-size:.75rem;color:var(--s300);margin:.35rem 0}
+.svc-out-check{color:var(--teal);flex-shrink:0;margin-top:1px}
+.svc-card-footer{padding-top:.9rem;border-top:1px solid rgba(27,38,73,.6);display:flex;align-items:center;justify-content:space-between;gap:.75rem}
+.svc-detail-btn{font-family:var(--mono);font-size:.7rem;color:var(--s400);background:none;border:none;cursor:pointer;text-decoration:underline;text-underline-offset:3px;transition:color .2s}
+.svc-detail-btn:hover{color:#fff}
+.svc-book-btn{display:flex;align-items:center;gap:.35rem;padding:.4rem .8rem;background:var(--n800);border:none;border-radius:8px;font-family:var(--head);font-weight:600;font-size:.75rem;color:var(--s200);cursor:pointer;transition:background .15s,color .15s}
+.svc-book-btn:hover{background:var(--teal);color:var(--n900)}
+.modal-overlay{display:none;position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--n850);border:1px solid rgba(0,220,180,.4);border-radius:12px;max-width:640px;width:100%;padding:2rem;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 25px 60px rgba(0,0,0,.6)}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--s400);font-size:1.1rem;cursor:pointer;line-height:1;padding:.25rem;transition:color .2s}
+.modal-close:hover{color:#fff}
+.modal-head{display:flex;align-items:center;gap:.75rem;margin-bottom:1.2rem}
+.modal-icon{width:48px;height:48px;border-radius:8px;background:var(--n950);border:1px solid rgba(0,220,180,.5);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.modal-cat{font-family:var(--mono);font-size:.62rem;color:var(--teal);letter-spacing:.06em;text-transform:uppercase}
+.modal-title{font-family:var(--head);font-weight:800;font-size:1.4rem;color:#fff}
+.modal-desc{font-size:.88rem;color:var(--s300);line-height:1.75;margin-bottom:1.5rem}
+.modal-section-label{font-family:var(--mono);font-size:.62rem;color:var(--s400);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem}
+.modal-deliverables{background:var(--n950);border:1px solid var(--n700);border-radius:8px;padding:1rem;margin-bottom:1.2rem}
+.modal-deliv-item{display:flex;align-items:flex-start;gap:.6rem;font-size:.83rem;color:var(--s200);margin:.4rem 0}
+.modal-tools{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
+.modal-tool{font-family:var(--mono);font-size:.68rem;color:var(--s300);background:var(--n800);border:1px solid var(--n700);padding:.25rem .6rem;border-radius:4px}
+.modal-footer{display:flex;justify-content:flex-end;align-items:center;gap:.75rem;padding-top:1rem;border-top:1px solid var(--n700)}
+.modal-cancel{padding:.5rem 1rem;font-size:.78rem;color:var(--s400);background:none;border:none;cursor:pointer;transition:color .2s}
+.modal-cancel:hover{color:#fff}
+.modal-book{padding:.6rem 1.2rem;font-family:var(--head);font-weight:700;font-size:.82rem;color:var(--n900);background:var(--teal);border:none;border-radius:8px;cursor:pointer;transition:background .15s}
+.modal-book:hover{background:#1ee8c2}
 
-    .services {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 2rem;
-      animation: fadeUp 0.8s ease 0.7s forwards;
-      opacity: 0;
-    }
+/* METHODOLOGY */
+#methodology{padding:5rem 0;background:var(--n850);border-top:1px solid var(--n700);border-bottom:1px solid var(--n700)}
+.meth-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:.75rem;margin-bottom:3rem}
+.meth-card{background:var(--n900);border:1px solid var(--n700);border-radius:12px;padding:1.3rem;transition:border-color .2s}
+.meth-card:hover{border-color:rgba(0,220,180,.4)}
+.meth-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.9rem}
+.meth-num{font-family:var(--mono);font-size:1.6rem;font-weight:900;color:var(--teal);line-height:1}
+.meth-icon{width:32px;height:32px;border-radius:6px;background:var(--n850);border:1px solid var(--n700);display:flex;align-items:center;justify-content:center;font-size:.85rem}
+.meth-title{font-family:var(--head);font-weight:700;font-size:.88rem;color:#fff;margin-bottom:.4rem;line-height:1.3}
+.meth-desc{font-size:.72rem;color:var(--s400);line-height:1.6}
+.radar-wrap{background:var(--n950);border:1px solid var(--n700);border-radius:12px;padding:1.2rem;margin-bottom:3rem}
+.radar-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:.8rem;border-bottom:1px solid var(--n700);margin-bottom:1rem}
+.radar-title{display:flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.72rem;font-weight:700;color:#fff}
+.radar-retrace{padding:.3rem .7rem;font-family:var(--mono);font-size:.65rem;color:var(--s300);background:var(--n850);border:1px solid var(--n700);border-radius:6px;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:.35rem}
+.radar-retrace:hover{color:var(--teal);border-color:rgba(0,220,180,.5)}
+.covenant{background:rgba(14,22,38,.8);border:1px solid var(--n700);border-radius:12px;padding:2.5rem;display:grid;grid-template-columns:1fr 260px;gap:3rem;align-items:center}
+.cov-eye{font-family:var(--mono);font-size:.65rem;color:var(--teal);letter-spacing:.08em;margin-bottom:.5rem}
+.cov-title{font-family:var(--head);font-weight:800;font-size:1.5rem;color:#fff;margin-bottom:.9rem;line-height:1.2}
+.cov-desc{font-size:.88rem;color:var(--s300);line-height:1.75}
+.cov-panel{background:var(--n950);border:1px solid var(--n700);border-radius:10px;padding:1.3rem;font-family:var(--mono);font-size:.72rem}
+.cov-ph{color:var(--teal);font-weight:700;border-bottom:1px solid var(--n700);padding-bottom:.6rem;margin-bottom:.8rem;display:flex;justify-content:space-between;align-items:center}
+.cov-ph span:last-child{font-size:.6rem;color:var(--s400)}
+.cov-item{display:flex;align-items:center;gap:.55rem;color:var(--s300);margin:.4rem 0}
+.cov-check{color:var(--teal)}
 
-    .service-tag {
-      background: rgba(0, 220, 180, 0.08);
-      border: 1px solid rgba(0, 220, 180, 0.25);
-      color: #00dcb4;
-      padding: 0.4rem 1rem;
-      border-radius: 20px;
-      font-size: 0.78rem;
-      letter-spacing: 1px;
-      font-weight: 500;
-    }
+/* SCOPE */
+#scope{padding:5rem 0;background:var(--n900)}
+.scope-grid{display:grid;grid-template-columns:7fr 5fr;gap:2rem;align-items:start}
+.scope-form-wrap{background:var(--n850);border:1px solid var(--n700);border-radius:12px;padding:2rem}
+.scope-step{margin-bottom:1.8rem}
+.scope-step:last-child{margin-bottom:0}
+.scope-label{font-family:var(--mono);font-size:.65rem;color:var(--s300);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:.7rem}
+.scope-opts{display:grid;gap:.5rem}
+.scope-opts.c2{grid-template-columns:1fr 1fr}
+.scope-opts.c3{grid-template-columns:repeat(3,1fr)}
+.scope-btn{background:var(--n950);border:1px solid var(--n700);border-radius:8px;padding:.65rem .9rem;cursor:pointer;text-align:left;transition:border-color .2s,background .15s;width:100%}
+.scope-btn:hover{border-color:var(--s600)}
+.scope-btn.active{background:var(--t10);border-color:var(--teal)}
+.scope-btn-title{font-family:var(--head);font-weight:600;font-size:.8rem;color:#fff;display:block;margin-bottom:.12rem}
+.scope-btn-sub{font-size:.68rem;color:var(--s400)}
+.scope-hint{font-family:var(--mono);font-size:.65rem;color:var(--s400);margin-top:.5rem;line-height:1.5}
+.scope-result{background:var(--n950);border:1px solid var(--t20);border-radius:12px;padding:1.8rem;position:sticky;top:5rem}
+.scope-result-eye{font-family:var(--mono);font-size:.62rem;color:var(--teal);letter-spacing:.08em;margin-bottom:.4rem}
+.scope-result-title{font-family:var(--head);font-weight:800;font-size:1.05rem;color:#fff;margin-bottom:.35rem}
+.scope-result-meta{font-family:var(--mono);font-size:.68rem;color:var(--s400);margin-bottom:1.2rem}
+.scope-result-meta .tc{color:var(--teal)}
+.scope-tl-box{background:var(--n850);border:1px solid var(--n700);border-radius:8px;padding:.9rem 1.1rem;margin-bottom:1.2rem}
+.scope-tl-lbl{font-family:var(--mono);font-size:.62rem;color:var(--s400);display:flex;align-items:center;gap:.35rem;margin-bottom:.3rem}
+.scope-tl-val{font-family:var(--mono);font-weight:700;font-size:.95rem;color:#fff}
+.scope-del-lbl{font-family:var(--mono);font-size:.62rem;color:var(--s400);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.6rem}
+.scope-del-item{display:flex;align-items:flex-start;gap:.5rem;font-size:.75rem;color:var(--s300);margin:.4rem 0}
+.scope-del-check{color:var(--teal);flex-shrink:0;margin-top:1px}
+.scope-cta{width:100%;margin-top:1.2rem;padding:.85rem;background:var(--teal);color:var(--n900);font-family:var(--head);font-weight:700;font-size:.85rem;border:none;border-radius:8px;cursor:pointer;transition:box-shadow .15s,opacity .15s;box-shadow:0 0 20px -5px var(--t30);display:flex;align-items:center;justify-content:center;gap:.4rem}
+.scope-cta:hover{box-shadow:0 0 32px -2px var(--tglow);opacity:.93}
+.scope-note{font-family:var(--mono);font-size:.62rem;color:var(--s500);text-align:center;margin-top:.6rem}
 
-    .contact {
-      margin-top: 2.5rem;
-      animation: fadeUp 0.8s ease 0.9s forwards;
-      opacity: 0;
-    }
+/* TERMINAL */
+#term-sec{padding:5rem 0;background:var(--n900)}
+.term-wrap{background:var(--n950);border:1px solid var(--n700);border-radius:12px;overflow:hidden;font-family:var(--mono);font-size:.8rem}
+.term-tbar{display:flex;align-items:center;justify-content:space-between;padding:.7rem 1rem;background:var(--n900);border-bottom:1px solid var(--n700)}
+.term-tdots{display:flex;gap:.4rem}
+.tdot{width:11px;height:11px;border-radius:50%}
+.tdot-r{background:rgba(255,95,87,.8)}
+.tdot-y{background:rgba(254,188,46,.8)}
+.tdot-g{background:rgba(40,200,64,.8)}
+.term-tname{display:flex;align-items:center;gap:.5rem;font-size:.72rem;color:var(--s400);margin-left:.7rem}
+.term-tname .tc{color:var(--teal)}
+.term-tbadge{font-size:.6rem;color:var(--teal);border:1px solid rgba(0,220,180,.2);background:var(--t10);padding:.18rem .5rem;border-radius:4px}
+.term-treset{background:none;border:none;font-family:var(--mono);font-size:.68rem;color:var(--s500);cursor:pointer;transition:color .2s;display:flex;align-items:center;gap:.35rem}
+.term-treset:hover{color:var(--teal)}
+.term-tabs{display:flex;flex-wrap:wrap;gap:.4rem;padding:.55rem 1rem;background:var(--n950);border-bottom:1px solid rgba(27,38,73,.5)}
+.ttab{padding:.32rem .75rem;font-size:.72rem;border-radius:4px;border:1px solid transparent;cursor:pointer;background:transparent;color:var(--s400);transition:.18s;font-family:var(--mono);display:flex;align-items:center;gap:.35rem}
+.ttab:hover{color:var(--s100);background:var(--n800)}
+.ttab.active{background:var(--t10);border-color:rgba(0,220,180,.2);color:var(--teal)}
+.term-body{padding:1.2rem;height:340px;overflow-y:auto;background:rgba(5,8,17,.95);display:flex;flex-direction:column;gap:.9rem}
+.term-welcome p{font-size:.72rem;line-height:1.6}
+.term-welcome .tw{color:var(--teal);font-weight:700}
+.term-welcome .ts{color:var(--s400)}
+.term-welcome .th{color:#fff;background:var(--n800);padding:.1rem .3rem;border-radius:3px}
+.term-cmdline{display:flex;align-items:center;gap:.55rem;margin-bottom:.4rem}
+.term-prompt{color:var(--teal);font-weight:700;white-space:nowrap}
+.term-cmd{color:var(--s100);font-weight:500}
+.term-ts{font-size:.6rem;color:var(--s600);margin-left:auto;white-space:nowrap}
+.term-output{padding-left:.85rem;border-left:2px solid rgba(0,220,180,.2);display:flex;flex-direction:column;gap:.18rem}
+.lo{color:var(--teal)}.li{color:var(--sky)}.la{color:#fbbf24}.ln{color:var(--s300)}
+.term-ibar{display:flex;align-items:center;gap:.6rem;padding:.7rem 1rem;background:var(--n900);border-top:1px solid var(--n700)}
+.term-iprompt{color:var(--teal);font-weight:700;display:flex;align-items:center;gap:.25rem;white-space:nowrap;font-size:.8rem}
+.term-input{flex:1;background:transparent;border:none;outline:none;color:var(--s100);font-family:var(--mono);font-size:.8rem}
+.term-input::placeholder{color:var(--s600)}
+.term-run{padding:.35rem .9rem;background:var(--teal);color:var(--n900);font-weight:700;font-size:.7rem;border:none;border-radius:4px;cursor:pointer;font-family:var(--mono);transition:opacity .15s}
+.term-run:hover{opacity:.88}
+.term-run:disabled{opacity:.3;cursor:not-allowed}
 
-    .contact p {
-      font-size: 0.8rem;
-      color: #4a5568;
-      margin-bottom: 0.5rem;
-      letter-spacing: 1px;
-    }
+/* ABOUT */
+#about{padding:5rem 0;background:var(--n850);border-top:1px solid var(--n700)}
+.about-grid{display:grid;grid-template-columns:5fr 7fr;gap:3.5rem;align-items:center}
+.about-card{border-radius:16px;padding:1px;background:linear-gradient(to bottom,rgba(0,220,180,.4),var(--n700),var(--n950));box-shadow:0 25px 60px rgba(0,0,0,.4)}
+.about-card-inner{border-radius:15px;background:var(--n950);padding:1.5rem;display:flex;flex-direction:column;gap:1.2rem}
+.about-logo-frame{position:relative;border-radius:10px;overflow:hidden;border:1px solid rgba(0,220,180,.3);background:var(--n900);aspect-ratio:1}
+.about-logo-frame img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.about-logo-frame:hover img{transform:scale(1.05)}
+.about-logo-frame::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,var(--n900) 0%,transparent 50%);pointer-events:none}
+.about-logo-overlay{position:absolute;bottom:.75rem;left:.75rem;right:.75rem;display:flex;justify-content:space-between;z-index:2}
+.alo-tag{font-family:var(--mono);font-size:.62rem;padding:.25rem .55rem;border-radius:4px;backdrop-filter:blur(8px)}
+.alo-hq{color:#fff;background:rgba(10,15,30,.8);border:1px solid var(--n700)}
+.alo-ops{color:var(--teal);background:rgba(10,15,30,.8);border:1px solid rgba(0,220,180,.3)}
+.about-spec{border-top:1px solid var(--n700);padding-top:1rem;display:flex;flex-direction:column;gap:.6rem;font-family:var(--mono);font-size:.72rem}
+.spec-row{display:flex;justify-content:space-between;align-items:center;color:var(--s300)}
+.spec-key{color:var(--s500)}
+.spec-val{color:#fff;font-weight:500}
+.spec-val.tc{color:var(--teal)}
+.spec-val a{color:var(--sky);text-decoration:none;transition:color .2s}
+.spec-val a:hover{color:var(--teal)}
+.about-text h2{font-family:var(--head);font-weight:800;font-size:clamp(1.6rem,2.5vw,2.4rem);letter-spacing:-.04em;color:#fff;margin-bottom:1.2rem;line-height:1.15}
+.about-text p{color:var(--s300);line-height:1.75;font-size:.92rem;margin-bottom:1rem}
+.about-tenets{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin:1.5rem 0}
+.tenet{background:var(--n900);border:1px solid var(--n700);border-radius:10px;padding:1rem}
+.tenet-title{font-family:var(--head);font-weight:700;font-size:.85rem;color:#fff;display:flex;align-items:center;gap:.4rem;margin-bottom:.35rem}
+.tenet-check{color:var(--teal)}
+.tenet-desc{font-size:.75rem;color:var(--s400);line-height:1.5}
+.about-links{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:.5rem}
+.about-link{display:flex;align-items:center;gap:.5rem;padding:.5rem 1rem;background:var(--n900);border:1px solid var(--n700);border-radius:8px;font-family:var(--mono);font-size:.72rem;color:var(--s300);text-decoration:none;transition:.2s}
+.about-link:hover{color:var(--teal);border-color:var(--teal)}
 
-    .contact a {
-      color: #00dcb4;
-      text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 600;
-      letter-spacing: 1px;
-      transition: opacity 0.2s;
-    }
+/* WORK */
+#work{padding:5rem 0;background:var(--n900)}
+.work-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.work-card{background:var(--n850);border:1px solid var(--n700);border-radius:10px;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s}
+.work-card:hover{transform:translateY(-4px);border-color:rgba(0,220,180,.22);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.work-banner{height:140px;background:var(--n950);display:flex;align-items:center;justify-content:center;font-size:2.3rem;position:relative;overflow:hidden}
+.work-banner::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--t10),transparent)}
+.work-body{padding:1.2rem}
+.work-type{font-family:var(--mono);font-size:.6rem;color:var(--teal);letter-spacing:.08em;margin-bottom:.35rem}
+.work-title{font-family:var(--head);font-weight:700;font-size:.95rem;color:#fff;margin-bottom:.5rem}
+.work-desc{font-size:.78rem;color:var(--s400);line-height:1.6}
+.work-footer{display:flex;justify-content:space-between;align-items:center;padding:.75rem 1.2rem;border-top:1px solid rgba(255,255,255,.04)}
+.work-tags{display:flex;gap:.35rem;flex-wrap:wrap}
+.work-tag{font-family:var(--mono);font-size:.58rem;color:var(--s500);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);padding:.15rem .45rem;border-radius:3px}
+.work-link{font-family:var(--head);font-size:.7rem;font-weight:600;color:var(--teal);text-decoration:none;border:1px solid rgba(0,220,180,.22);padding:.25rem .6rem;border-radius:4px;white-space:nowrap;transition:background .15s}
+.work-link:hover{background:var(--t10)}
 
-    .contact a:hover { opacity: 0.7; }
+/* CONTACT */
+#contact{padding:5rem 0;background:var(--n900)}
+.contact-grid{display:grid;grid-template-columns:5fr 7fr;gap:3.5rem}
+.contact-left-eye{font-family:var(--mono);font-size:.68rem;color:var(--teal);letter-spacing:.1em;margin-bottom:.8rem}
+.contact-left-desc{font-size:.9rem;color:var(--s300);line-height:1.75;margin-bottom:1.5rem}
+.contact-info-box{background:var(--n850);border:1px solid var(--n700);border-radius:10px;padding:1.2rem;font-family:var(--mono);font-size:.72rem;margin-bottom:1rem}
+.cib-row{display:flex;justify-content:space-between;align-items:center;color:var(--s300);padding:.45rem 0;border-bottom:1px solid rgba(27,38,73,.6)}
+.cib-row:last-child{border-bottom:none}
+.cib-key{color:var(--s500)}
+.cib-val{color:#fff}.cib-val.tc{color:var(--teal)}.cib-val a{color:var(--teal);text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:.35rem}.cib-val a:hover{color:#fff}
+.cib-copy{background:none;border:none;cursor:pointer;color:var(--s400);font-size:.7rem;transition:color .2s;padding:.1rem}
+.cib-copy:hover{color:var(--teal)}
+.safe-harbor{background:var(--n950);border:1px solid var(--n700);border-radius:8px;padding:1rem;display:flex;align-items:flex-start;gap:.75rem}
+.sh-icon{font-size:1rem;flex-shrink:0;margin-top:1px}
+.sh-title{font-family:var(--head);font-weight:700;font-size:.85rem;color:#fff;margin-bottom:.3rem}
+.sh-desc{font-size:.75rem;color:var(--s400);line-height:1.5}
+.cform-wrap{background:var(--n850);border:1px solid var(--n700);border-radius:12px;padding:2rem}
+.cform{display:flex;flex-direction:column;gap:1.1rem}
+.fg{display:flex;flex-direction:column;gap:.4rem}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
+.fl{font-family:var(--mono);font-size:.62rem;color:var(--s400);letter-spacing:.05em;text-transform:uppercase}
+.fl .req{color:var(--teal)}
+.finp,.fta,.fsel{background:var(--n950);border:1px solid rgba(27,38,73,.8);border-radius:8px;padding:.7rem 1rem;font-family:var(--body);font-size:.85rem;color:#fff;outline:none;transition:border-color .2s,box-shadow .2s;width:100%}
+.finp:focus,.fta:focus,.fsel:focus{border-color:rgba(0,220,180,.5);box-shadow:0 0 0 3px rgba(0,220,180,.07)}
+.fta{resize:vertical;min-height:110px;line-height:1.6}
+.fsel option{background:var(--n850)}
+.fsub{width:100%;padding:.85rem;font-family:var(--head);font-weight:700;font-size:.88rem;color:var(--n900);background:var(--teal);border:none;border-radius:10px;cursor:pointer;transition:background .15s,box-shadow .15s,transform .12s;box-shadow:0 0 20px -5px var(--t30);display:flex;align-items:center;justify-content:center;gap:.5rem}
+.fsub:hover{background:#1ee8c2;box-shadow:0 0 32px -2px var(--tglow);transform:translateY(-1px)}
+.fsub:active{transform:scale(.98)}
+.fnote{font-family:var(--mono);font-size:.62rem;color:var(--s500);text-align:center}
+.form-sent{display:none;padding:3rem 1rem;text-align:center}
+.form-sent-icon{width:64px;height:64px;border-radius:50%;background:var(--t10);border:1px solid var(--teal);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.8rem}
+.form-sent-title{font-family:var(--head);font-weight:800;font-size:1.4rem;color:#fff;margin-bottom:.6rem}
+.form-sent-desc{font-size:.88rem;color:var(--s300);line-height:1.6;max-width:400px;margin:0 auto 1.5rem}
+.form-sent-email{color:var(--teal)}
+.form-reset{padding:.5rem 1.2rem;font-family:var(--mono);font-size:.72rem;color:var(--s300);background:var(--n950);border:1px solid var(--n700);border-radius:8px;cursor:pointer;transition:.2s}
+.form-reset:hover{border-color:var(--teal);color:var(--teal)}
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+/* FOOTER */
+footer{background:var(--n950);border-top:1px solid var(--n700);padding:3rem 0 2rem;font-family:var(--mono);font-size:.72rem}
+.footer-inner{max-width:1280px;margin:0 auto;padding:0 1.5rem}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+.footer-brand{display:flex;align-items:center;gap:.7rem;text-decoration:none;margin-bottom:1rem}
+.footer-brand img{width:32px;height:32px;border-radius:6px;border:1px solid rgba(0,220,180,.4);padding:1px;object-fit:cover}
+.footer-brand-name{font-family:var(--head);font-weight:800;font-size:.95rem;color:#fff}
+.footer-brand-name span{color:var(--teal)}
+.footer-brand-desc{color:var(--s400);font-family:var(--body);font-size:.78rem;line-height:1.6;max-width:280px;margin-bottom:.6rem}
+.footer-brand-loc{color:var(--s500);font-size:.65rem;letter-spacing:.04em}
+.footer-col-title{color:var(--s200);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:.62rem;display:block;margin-bottom:.8rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.footer-col a{color:var(--s400);text-decoration:none;transition:color .2s;font-size:.72rem}
+.footer-col a:hover{color:var(--teal)}
+.footer-bottom{padding-top:2rem;border-top:1px solid var(--n700);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:.65rem;color:var(--s500)}
+.footer-bottom-right{display:flex;align-items:center;gap:1.5rem}
+.footer-top-btn{display:flex;align-items:center;gap:.35rem;color:var(--s400);background:none;border:none;cursor:pointer;font-family:var(--mono);font-size:.65rem;transition:color .2s}
+.footer-top-btn:hover{color:var(--teal)}
 
-    .dots {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0;
-    }
+/* FADE-IN */
+.fade{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.fade.vis{opacity:1;transform:none}
 
-    .dot {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: rgba(0, 220, 180, 0.4);
-      border-radius: 50%;
-      animation: float linear infinite;
-    }
-
-    @keyframes float {
-      0% { transform: translateY(100vh); opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { transform: translateY(-10px); opacity: 0; }
-    }
-  </style>
+@media(max-width:1050px){
+  .hero-grid{grid-template-columns:1fr}.hero-right{display:none}
+  .hero-kpi{grid-template-columns:repeat(2,1fr)}
+  .about-grid,.contact-grid{grid-template-columns:1fr}
+  .covenant{grid-template-columns:1fr}
+  .scope-grid{grid-template-columns:1fr}
+  .svc-grid{grid-template-columns:repeat(2,1fr)}
+  .meth-steps{grid-template-columns:repeat(3,1fr)}
+  .work-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  .nav-links,.nav-actions{display:none}
+  .nav-hbg{display:flex}
+  .svc-grid,.work-grid{grid-template-columns:1fr}
+  .meth-steps{grid-template-columns:repeat(2,1fr)}
+  .frow{grid-template-columns:1fr}
+  .about-tenets,.scope-opts.c3{grid-template-columns:1fr 1fr}
+  .hero-kpi{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr}
+  section{padding:4rem 0}
+}
+</style>
 </head>
 <body>
 
-  <div class="dots" id="dots"></div>
+<div class="cursor-glow" id="cg" aria-hidden="true"></div>
+<div class="cursor-dot" id="cd" aria-hidden="true"></div>
 
-  <div class="container">
-    <div class="logo-wrapper">
-      <img src="logo.png" alt="Vixy Labs Logo" />
+<div id="spbar-wrap">
+  <div id="spbar-track"><div id="spbar"></div></div>
+  <div id="sp-hud"><div id="sp-label"><span class="sl" id="sp-sec">00. RECON HERO</span><span style="color:var(--s600)">·</span><span class="sp" id="sp-pct">0%</span></div></div>
+</div>
+
+<header id="main-nav">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-brand">
+      <div class="nav-brand-img"><img src="logo.png" alt="Vixy Labs"/></div>
+      <div class="nav-brand-col">
+        <div class="nav-brand-name">VIXY<span>LABS</span></div>
+        <div class="nav-brand-sub">SECURE · BUILD · INNOVATE</div>
+      </div>
+    </a>
+    <nav class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#methodology">Red Team Doctrine</a>
+      <a href="#scope">Scope Calculator</a>
+      <a href="#about">About &amp; HQ</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="https://github.com/vixylabs" target="_blank" rel="noopener" class="nav-gh" title="GitHub @vixylabs">🐙</a>
+      <button class="nav-cta-btn" onclick="goTo('#contact')">Request Engagement</button>
     </div>
+    <button class="nav-hbg" id="hbg" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
 
-    <h1 class="brand">VIXY <span>LABS</span></h1>
-    <p class="tagline">SECURE &nbsp;·&nbsp; BUILD &nbsp;·&nbsp; INNOVATE</p>
+<div class="mob-menu" id="mob-menu">
+  <a href="#services" onclick="closeMob()">Services</a>
+  <a href="#methodology" onclick="closeMob()">Red Team Doctrine</a>
+  <a href="#scope" onclick="closeMob()">Scope Calculator</a>
+  <a href="#about" onclick="closeMob()">About &amp; HQ</a>
+  <a href="#contact" onclick="closeMob()">Contact</a>
+</div>
 
-    <div class="divider"></div>
-
-    <p class="coming-soon">
-      Something <strong>powerful</strong> is on its way.<br/>
-      We're building a platform where <strong>security meets innovation</strong>.<br/>
-      Stay tuned — big things are coming.
-    </p>
-
-    <div class="services">
-      <span class="service-tag">Penetration Testing</span>
-      <span class="service-tag">Red Teaming</span>
-      <span class="service-tag">Web Development</span>
-      <span class="service-tag">Mobile Apps</span>
-      <span class="service-tag">Security Audits</span>
-      <span class="service-tag">Bug Bounty</span>
+<section id="hero" class="cyber-grid" style="border-bottom:1px solid rgba(27,38,73,.6)">
+  <div class="hero-glows"><div class="g1"></div><div class="g2"></div></div>
+  <div class="hero-wrap" style="position:relative;z-index:2">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <div class="dot"></div>
+          <span class="tc">VIXY LABS</span><span class="sep">·</span>
+          <span>OFFENSIVE CYBERSECURITY</span><span class="sep">·</span>
+          <span>HARDENED ENGINEERING</span>
+        </div>
+        <h1 class="hero-h1">We hunt exploits before adversaries do —<br/><span class="teal">and build software that stands ground.</span></h1>
+        <p class="hero-desc">Founded by active red teamers and offensive security researchers in Tanzania. We combine adversarial penetration testing, deep threat modeling, and resilient full-stack web and mobile engineering.</p>
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="goTo('#contact')">Request Security Audit &rarr;</button>
+          <a href="#services" class="btn-secondary">Explore 6 Core Services</a>
+        </div>
+        <div class="hero-trust">
+          <div class="trust-item"><div class="trust-dot"></div>Tanzania HQ &bull; Global Scope</div>
+          <div class="trust-item"><div class="trust-dot"></div>OWASP &amp; MITRE ATT&amp;CK Framework</div>
+          <div class="trust-item"><div class="trust-dot"></div>Deep Manual Exploitation</div>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div style="width:100%">
+          <div class="hero-logo-badge">
+            <div class="hlb-info">
+              <div class="hlb-img"><img src="logo.png" alt="Vixy Labs Fox"/></div>
+              <div>
+                <div class="hlb-title">VIXY LABS THREAT SIMULATOR</div>
+                <div class="hlb-sub">Adversary Emulation &amp; AST Code Audit Suite</div>
+              </div>
+            </div>
+            <div class="hlb-badge"><div class="hlb-pulse"></div>LIVE PROBER</div>
+          </div>
+          <div class="morph-wrap">
+            <div class="mring mring1"></div><div class="mring mring2"></div>
+            <div class="mc mc-tl"></div><div class="mc mc-tr"></div>
+            <div class="mc mc-bl"></div><div class="mc mc-br"></div>
+            <img src="logo.png" alt="Vixy Labs Fox"/>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div class="contact">
-      <p>GET IN TOUCH</p>
-      <a href="mailto:vixylabshq@gmail.com">vixylabshq@gmail.com</a>
+    <div class="hero-kpi">
+      <div><div class="kpi-val">100%</div><div class="kpi-lbl">Manual Verification</div><div class="kpi-desc">Zero automated scanner fluff — real offensive human exploitation.</div></div>
+      <div><div class="kpi-val">MITRE &amp; OWASP</div><div class="kpi-lbl">Standard Compliance</div><div class="kpi-desc">Rigorous coverage against modern APT and web attack vectors.</div></div>
+      <div><div class="kpi-val">&lt;24h</div><div class="kpi-lbl">Critical Triage Speed</div><div class="kpi-desc">Immediate hot-fix guidance for high &amp; critical severity findings.</div></div>
+      <div><div class="kpi-val">Dual-Discipline</div><div class="kpi-lbl">Break &amp; Build</div><div class="kpi-desc">Red teamers write stronger code; developers exploit deeper logic.</div></div>
     </div>
   </div>
+</section>
 
-  <script>
-    const dotsContainer = document.getElementById('dots');
-    for (let i = 0; i < 40; i++) {
-      const dot = document.createElement('div');
-      dot.classList.add('dot');
-      dot.style.left = Math.random() * 100 + 'vw';
-      dot.style.animationDuration = (Math.random() * 10 + 8) + 's';
-      dot.style.animationDelay = (Math.random() * 10) + 's';
-      dot.style.width = dot.style.height = (Math.random() * 3 + 1) + 'px';
-      dotsContainer.appendChild(dot);
-    }
-  </script>
+<div class="seam"></div>
 
+<section id="services">
+  <div class="sec-wrap">
+    <div class="svc-header">
+      <div class="fade">
+        <div class="sec-eye">01. CORE CAPABILITIES<span class="sep">·</span><span style="color:var(--s400)">OFFENSIVE &amp; DEFENSIVE SUITE</span></div>
+        <h2 class="sec-h2" style="max-width:580px">Battle-tested security services &amp; hardened software engineering.</h2>
+        <p class="sec-sub" style="margin-bottom:0">We operate on both sides of the digital frontline — dissecting attack chains and building resilient software that doesn't break under pressure.</p>
+      </div>
+      <div class="svc-filter fade" id="svc-filter">
+        <button class="sfc-btn active" data-filter="all">All Services (6)</button>
+        <button class="sfc-btn" data-filter="Offensive Security">Offensive Security</button>
+        <button class="sfc-btn" data-filter="Secure Engineering">Software Engineering</button>
+      </div>
+    </div>
+    <div class="svc-grid" id="svc-grid"></div>
+  </div>
+</section>
+
+<div class="modal-overlay" id="svc-modal">
+  <div class="modal-box">
+    <button class="modal-close" id="modal-close-btn">✕</button>
+    <div class="modal-head">
+      <div class="modal-icon" id="modal-icon"></div>
+      <div>
+        <div class="modal-cat" id="modal-cat"></div>
+        <div class="modal-title" id="modal-title"></div>
+      </div>
+    </div>
+    <p class="modal-desc" id="modal-desc"></p>
+    <div class="modal-section-label">Scope of Deliverables:</div>
+    <div class="modal-deliverables" id="modal-delivs"></div>
+    <div class="modal-section-label">Operating Tools &amp; Tech Stack:</div>
+    <div class="modal-tools" id="modal-tools"></div>
+    <div class="modal-footer">
+      <button class="modal-cancel" id="modal-cancel-btn">Close</button>
+      <button class="modal-book" id="modal-book-btn">Schedule Engagement</button>
+    </div>
+  </div>
+</div>
+
+<div class="seam"></div>
+
+<section id="methodology">
+  <div class="sec-wrap">
+    <div class="sec-eye fade">02. THE VIXY METHODOLOGY<span class="sep">·</span><span style="color:var(--s400)">DISCIPLINED ATTACK &amp; DEFENSE</span></div>
+    <h2 class="sec-h2 fade">From initial reconnaissance to <span style="color:var(--teal)">verified, battle-tested remediation.</span></h2>
+    <p class="sec-sub fade">Our five-stage engagement lifecycle blends offensive adversary simulation workflows with rigorous software engineering discipline.</p>
+    <div class="meth-steps">
+      <div class="meth-card fade"><div class="meth-card-top"><span class="meth-num">01</span><div class="meth-icon">🔍</div></div><div class="meth-title">Reconnaissance &amp; Surface Mapping</div><div class="meth-desc">Passive and active OSINT profiling and infrastructure fingerprinting. We map every external asset, subdomain, cloud bucket, and shadow API endpoint.</div></div>
+      <div class="meth-card fade"><div class="meth-card-top"><span class="meth-num">02</span><div class="meth-icon">⚡</div></div><div class="meth-title">Adversary Threat Modeling</div><div class="meth-desc">Identifying realistic attack paths and high-value target data flows. Formulating custom exploitation hypotheses tailored to your tech stack.</div></div>
+      <div class="meth-card fade"><div class="meth-card-top"><span class="meth-num">03</span><div class="meth-icon">💥</div></div><div class="meth-title">Controlled Offensive Exploitation</div><div class="meth-desc">Manual verification of critical flaws (RCE, SQLi, SSRF, broken access control) producing deterministic, non-destructive Proof-of-Concept artifacts.</div></div>
+      <div class="meth-card fade"><div class="meth-card-top"><span class="meth-num">04</span><div class="meth-icon">🔧</div></div><div class="meth-title">Direct Code-Level Remediation</div><div class="meth-desc">We don't drop generic PDF reports. As software engineers, we provide exact code snippets, ORM rewrites, and security config manifests.</div></div>
+      <div class="meth-card fade"><div class="meth-card-top"><span class="meth-num">05</span><div class="meth-icon">✅</div></div><div class="meth-title">Validation &amp; Zero-Regression Retest</div><div class="meth-desc">Once patches are deployed, we re-run targeted offensive suites to guarantee the vulnerability is eradicated and no regressions exist.</div></div>
+    </div>
+    <div class="radar-wrap fade">
+      <div class="radar-head">
+        <div class="radar-title">🎯 ATTACK VECTOR TRACER</div>
+        <button class="radar-retrace" id="radar-btn">↺ Re-trace</button>
+      </div>
+      <svg id="radar-svg" viewBox="0 0 500 280" style="width:100%;height:auto" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="250" cy="140" r="120" stroke="#1b2649" stroke-width="1" stroke-dasharray="3 3"/>
+        <circle cx="250" cy="140" r="85" stroke="#1b2649" stroke-width="1"/>
+        <circle cx="250" cy="140" r="50" stroke="#00dcb4" stroke-width="1" stroke-opacity=".4"/>
+        <circle cx="250" cy="140" r="15" stroke="#00dcb4" stroke-width="1.5" stroke-opacity=".8"/>
+        <line x1="250" y1="15" x2="250" y2="265" stroke="#1b2649" stroke-width="1"/>
+        <line x1="120" y1="140" x2="380" y2="140" stroke="#1b2649" stroke-width="1"/>
+        <path id="radar-path" d="M 120 70 L 210 110 L 250 140 L 320 80 L 390 150 L 310 210 L 250 140 L 170 200 Z" stroke="#00dcb4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" filter="drop-shadow(0px 0px 6px rgba(0,220,180,.7))" stroke-dasharray="1000" stroke-dashoffset="1000"/>
+        <g id="radar-nodes">
+          <g class="rnode" opacity="0"><circle cx="120" cy="70" r="6" fill="#070b16" stroke="#00dcb4" stroke-width="2"/><circle cx="120" cy="70" r="2.5" fill="#fff"/><text x="129" y="73" fill="#94a3b8" font-size="9" font-family="JetBrains Mono,monospace" font-weight="600">EXT_API</text></g>
+          <g class="rnode" opacity="0"><circle cx="210" cy="110" r="6" fill="#070b16" stroke="#00dcb4" stroke-width="2"/><circle cx="210" cy="110" r="2.5" fill="#fff"/><text x="219" y="113" fill="#94a3b8" font-size="9" font-family="JetBrains Mono,monospace" font-weight="600">AUTH_01</text></g>
+          <g class="rnode" opacity="0"><circle cx="250" cy="140" r="6" fill="#070b16" stroke="#00dcb4" stroke-width="2"/><circle cx="250" cy="140" r="2.5" fill="#fff"/><text x="259" y="143" fill="#94a3b8" font-size="9" font-family="JetBrains Mono,monospace" font-weight="600">VIXY_CORE</text></g>
+          <g class="rnode" opacity="0"><circle cx="320" cy="80" r="6" fill="#070b16" stroke="#00dcb4" stroke-width="2"/><circle cx="320" cy="80" r="2.5" fill="#fff"/><text x="329" y="83" fill="#94a3b8" font-size="9" font-family="JetBrains Mono,monospace" font-weight="600">CLOUD_IAM</text></g>
+          <g class="rnode" opacity="0"><circle cx="390" cy="150" r="6" fill="#070b16" stroke="#00dcb4" stroke-width="2"/><circle cx="390" cy="150" r="2.5" fill="#fff"/><text x="399" y="153" fill="#94a3b8" font-size="9" font-family="JetBrains Mono,monospace" font-weight="600">STORAGE</text></g>
+          <g class="rnode" opacity="0"><circle cx="310" cy="210" r="6" fill="#070b16" stroke="#00dcb4" stroke-width="2"/><circle cx="310" cy="210" r="2.5" fill="#fff"/><text x="319" y="213" fill="#94a3b8" font-size="9" font-family="JetBrains Mono,monospace" font-weight="600">DB_CLUSTER</text></g>
+          <g class="rnode" opacity="0"><circle cx="170" cy="200" r="6" fill="#070b16" stroke="#00dcb4" stroke-width="2"/><circle cx="170" cy="200" r="2.5" fill="#fff"/><text x="179" y="203" fill="#94a3b8" font-size="9" font-family="JetBrains Mono,monospace" font-weight="600">WEBHOOK</text></g>
+        </g>
+      </svg>
+      <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:.65rem;color:var(--s400);padding-top:.6rem;border-top:1px solid var(--n800)">
+        <span style="color:var(--teal)">Vector Path: 7 Ingress Nodes Mapped</span>
+        <span>CSS Animation Engine Active</span>
+      </div>
+    </div>
+    <div class="covenant fade">
+      <div>
+        <div class="cov-eye">THE VIXY LABS ADVANTAGE</div>
+        <div class="cov-title">Why offensive security and software development must live together.</div>
+        <div class="cov-desc">Traditional security consultancies hand you a 90-page PDF report with theoretical CVSS scores and walk away. Traditional dev agencies build pretty apps full of authorization logic flaws and unpatched injection sinks.<br><br>At Vixy Labs, our red teamers build production applications every week, and our developers understand real-world memory injection, privilege escalation, and EDR evasion. We deliver airtight systems from architecture to deployment.</div>
+      </div>
+      <div class="cov-panel">
+        <div class="cov-ph"><span>SECURITY COVENANT</span><span>ENFORCED</span></div>
+        <div class="cov-item"><span class="cov-check">✓</span><span>Zero Automated Checkbox Scans</span></div>
+        <div class="cov-item"><span class="cov-check">✓</span><span>100% Deterministic PoCs</span></div>
+        <div class="cov-item"><span class="cov-check">✓</span><span>Production-Safe Exploit Tests</span></div>
+        <div class="cov-item"><span class="cov-check">✓</span><span>30-Day Free Re-Test Included</span></div>
+        <div class="cov-item"><span class="cov-check">✓</span><span>NDA on Every Engagement</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="seam"></div>
+
+<section id="scope">
+  <div class="sec-wrap">
+    <div class="sec-eye fade">03. INTERACTIVE SCOPING<span class="sep">·</span><span style="color:var(--s400)">ENGAGEMENT CALCULATOR</span></div>
+    <h2 class="sec-h2 fade">Configure your engagement parameters and <span style="color:var(--teal)">review deliverables.</span></h2>
+    <p class="sec-sub fade">Specify your technical attack surface or software development requirements to view the recommended methodology, testing timeline, and deliverable package.</p>
+    <div class="scope-grid">
+      <div class="scope-form-wrap fade">
+        <div class="scope-step">
+          <label class="scope-label">1. Target Environment / Service</label>
+          <div class="scope-opts c2" id="scope-svc-opts">
+            <button class="scope-btn active" data-svc="Web Application Penetration Test"><span class="scope-btn-title">Web App Pentest</span></button>
+            <button class="scope-btn" data-svc="Red Teaming &amp; Adversary Simulation"><span class="scope-btn-title">Red Teaming</span></button>
+            <button class="scope-btn" data-svc="Mobile Application Security"><span class="scope-btn-title">Mobile App Security</span></button>
+            <button class="scope-btn" data-svc="Full Source Code Audit"><span class="scope-btn-title">Code Audit (White Box)</span></button>
+            <button class="scope-btn" data-svc="Hardened Web Engineering"><span class="scope-btn-title">Web Development</span></button>
+            <button class="scope-btn" data-svc="Bug Bounty Program Management"><span class="scope-btn-title">Bug Bounty</span></button>
+          </div>
+        </div>
+        <div class="scope-step">
+          <label class="scope-label">2. Access Model</label>
+          <div class="scope-opts c3" id="scope-box-opts">
+            <button class="scope-btn active" data-box="Grey Box"><span class="scope-btn-title">Grey Box</span></button>
+            <button class="scope-btn" data-box="Black Box"><span class="scope-btn-title">Black Box</span></button>
+            <button class="scope-btn" data-box="White Box"><span class="scope-btn-title">White Box</span></button>
+          </div>
+          <div class="scope-hint" id="box-hint">Industry gold standard: Testing with authenticated credentials replicating malicious insider or compromised user.</div>
+        </div>
+        <div class="scope-step">
+          <label class="scope-label">3. Asset Footprint &amp; Complexity</label>
+          <div class="scope-opts c3" id="scope-scale-opts">
+            <button class="scope-btn active" data-scale="Focused"><span class="scope-btn-title">Focused</span><span class="scope-btn-sub">1–10 endpoints</span></button>
+            <button class="scope-btn" data-scale="Standard"><span class="scope-btn-title">Standard</span><span class="scope-btn-sub">10–40 endpoints</span></button>
+            <button class="scope-btn" data-scale="Enterprise"><span class="scope-btn-title">Enterprise</span><span class="scope-btn-sub">Multi-service / cloud</span></button>
+          </div>
+        </div>
+        <div class="scope-step">
+          <label class="scope-label">4. Schedule &amp; Urgency</label>
+          <div class="scope-opts c3" id="scope-urg-opts">
+            <button class="scope-btn active" data-urg="Standard"><span class="scope-btn-title">Standard</span></button>
+            <button class="scope-btn" data-urg="Fast-Track"><span class="scope-btn-title">Fast-Track</span></button>
+            <button class="scope-btn" data-urg="Emergency"><span class="scope-btn-title">Emergency</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="scope-result fade">
+        <div class="scope-result-eye">ENGAGEMENT PROJECTION</div>
+        <div class="scope-result-title" id="sr-title">Web Application Penetration Test</div>
+        <div class="scope-result-meta" id="sr-meta">Grey Box &bull; Focused Footprint &bull; <span class="tc">Standard</span></div>
+        <div class="scope-tl-box">
+          <div class="scope-tl-lbl">⏱ Estimated Execution Window</div>
+          <div class="scope-tl-val" id="sr-tl">3 – 5 Business Days</div>
+        </div>
+        <div class="scope-del-lbl">Guaranteed Assessment Deliverables:</div>
+        <div class="scope-del-item"><span class="scope-del-check">✓</span><span>Executive Threat Briefing &amp; Risk Impact Analysis</span></div>
+        <div class="scope-del-item"><span class="scope-del-check">✓</span><span>Deterministic PoC Exploit Scripts &amp; Reproduction Steps</span></div>
+        <div class="scope-del-item"><span class="scope-del-check">✓</span><span>Engineering Fix Guidance &amp; Code Snippets</span></div>
+        <div class="scope-del-item"><span class="scope-del-check">✓</span><span>Complimentary 30-Day Remediation Retest</span></div>
+        <div class="scope-del-item" id="sr-wb" style="display:none;color:var(--sky)"><span style="color:var(--sky)">✓</span>&nbsp;<span>AST Source Code Taint Map &amp; Cryptographic Review</span></div>
+        <button class="scope-cta" id="scope-apply">Apply Parameters to Contact Request &rarr;</button>
+        <div class="scope-note">Pre-fills your inquiry directly to vixylabshq@gmail.com</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="seam"></div>
+
+<section id="term-sec">
+  <div class="sec-wrap">
+    <div class="sec-eye fade">04. OFFENSIVE CONSOLE<span class="sep">·</span><span style="color:var(--s400)">INTERACTIVE ATTACK SIMULATOR</span></div>
+    <h2 class="sec-h2 fade">Run live <span style="color:var(--teal)">offensive security scenarios.</span></h2>
+    <p class="sec-sub fade">Click a preset scenario or type commands directly. Try: <code style="color:var(--teal);background:var(--t10);padding:.1rem .4rem;border-radius:3px;font-family:var(--mono)">help</code>, <code style="color:var(--teal);background:var(--t10);padding:.1rem .4rem;border-radius:3px;font-family:var(--mono)">whoami</code>, <code style="color:var(--teal);background:var(--t10);padding:.1rem .4rem;border-radius:3px;font-family:var(--mono)">services</code></p>
+    <div class="term-wrap fade">
+      <div class="term-tbar">
+        <div style="display:flex;align-items:center">
+          <div class="term-tdots"><div class="tdot tdot-r"></div><div class="tdot tdot-y"></div><div class="tdot tdot-g"></div></div>
+          <div class="term-tname">🖥️&nbsp;<span class="tc">vixy@security-node</span>:~/vixylabs-offensive-suite</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:.7rem">
+          <button class="term-treset" onclick="clearTerm()">↺ RESET</button>
+          <span class="term-tbadge">Offensive Console</span>
+        </div>
+      </div>
+      <div class="term-tabs" id="term-tabs">
+        <button class="ttab active" data-preset="recon">▶ Attack Surface Recon</button>
+        <button class="ttab" data-preset="redteam">▶ Adversary Emulation</button>
+        <button class="ttab" data-preset="audit">▶ Secure Code Audit</button>
+      </div>
+      <div class="term-body" id="term-body">
+        <div class="term-welcome">
+          <p class="tw">VIXY LABS RED TEAM &amp; DEFENSE EMULATOR [Version 2.4.1-enterprise]</p>
+          <p class="ts">Tanzania-based Offensive Security &amp; Secure Engineering Operations.</p>
+          <p class="ts" style="margin-top:.4rem">Type <span class="th">help</span> or click any scenario tab above to run live simulations.</p>
+        </div>
+      </div>
+      <form class="term-ibar" id="term-form" onsubmit="runCmd(event)">
+        <div class="term-iprompt"><span>❯</span><span>vixy#</span></div>
+        <input class="term-input" id="term-input" type="text" placeholder="Type a command (help, services, whoami, contact)..." autocomplete="off" spellcheck="false"/>
+        <button class="term-run" type="submit" id="term-run" disabled>Run</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div class="seam"></div>
+
+<section id="about">
+  <div class="sec-wrap">
+    <div class="about-grid">
+      <div class="fade">
+        <div class="about-card">
+          <div class="about-card-inner">
+            <div class="about-logo-frame">
+              <img src="logo.png" alt="Vixy Labs Fox"/>
+              <div class="about-logo-overlay">
+                <span class="alo-tag alo-hq">VIXY LABS HQ</span>
+                <span class="alo-tag alo-ops">TANZANIA · RED TEAM OPS</span>
+              </div>
+            </div>
+            <div class="about-spec">
+              <div class="spec-row"><span class="spec-key">Founder &amp; Lead:</span><span class="spec-val">Tony (Lead Security Researcher)</span></div>
+              <div class="spec-row"><span class="spec-key">Base of Operations:</span><span class="spec-val">Tanzania, East Africa</span></div>
+              <div class="spec-row"><span class="spec-key">Focus Area:</span><span class="spec-val tc">Adversary Emulation &amp; Hardened Engineering</span></div>
+              <div class="spec-row"><span class="spec-key">GitHub Org:</span><span class="spec-val"><a href="https://github.com/vixylabs" target="_blank">github.com/vixylabs</a></span></div>
+              <div class="spec-row"><span class="spec-key">Official Dispatch:</span><span class="spec-val"><a href="mailto:vixylabshq@gmail.com">vixylabshq@gmail.com</a></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="about-text fade">
+        <div class="sec-eye">04. ORIGIN &amp; MISSION<span class="sep">·</span><span style="color:var(--s400)">DEFENDING DIGITAL AFRICA &amp; BEYOND</span></div>
+        <h2>Built in Tanzania by active practitioners who live and breathe security.</h2>
+        <p>Vixy Labs was founded by Tony, a seasoned penetration tester and red team operator in Tanzania. We saw firsthand that African businesses, fintechs, and tech startups were building high-velocity applications without accessible, elite-tier offensive security partners.</p>
+        <p>We decided to change that. Vixy Labs bridges the gap by delivering world-class offensive adversarial simulations and hardened full-stack software development under one roof. Our emblem — the dark fox with piercing teal eyes — embodies our creed: silent stealth in reconnaissance, tactical agility in exploitation, and uncompromising protection for systems that matter.</p>
+        <div class="about-tenets">
+          <div class="tenet"><div class="tenet-title"><span class="tenet-check">✓</span>Real Human Adversary Simulation</div><div class="tenet-desc">We don't run passive scans and call it a day. We simulate actual adversaries probing for business logic and lateral movement.</div></div>
+          <div class="tenet"><div class="tenet-title"><span class="tenet-check">✓</span>Engineers Who Fix What They Break</div><div class="tenet-desc">Every finding comes with executable remediation code and re-test verification, minimizing friction with your engineering team.</div></div>
+        </div>
+        <div class="about-links">
+          <a href="https://github.com/vixylabs" target="_blank" class="about-link">🐙 Explore github.com/vixylabs</a>
+          <a href="mailto:vixylabshq@gmail.com" class="about-link">✉️ vixylabshq@gmail.com</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="seam"></div>
+
+<section id="work">
+  <div class="sec-wrap">
+    <div class="sec-eye fade">05. SELECTED WORK<span class="sep">·</span><span style="color:var(--s400)">WHAT WE'VE BUILT &amp; BROKEN</span></div>
+    <h2 class="sec-h2 fade">Recent <span style="color:var(--teal)">Engagements &amp; Builds</span></h2>
+    <p class="sec-sub fade">A snapshot of recent work. Details withheld where NDA applies — because we respect confidentiality as much as we find vulns.</p>
+    <div class="work-grid">
+      <div class="work-card fade"><div class="work-banner">🌍</div><div class="work-body"><div class="work-type">WEB APP PENTEST</div><div class="work-title">East African E-Commerce Platform</div><div class="work-desc">Full black-box assessment. Discovered 3 critical SQLi vectors, broken auth, and IDOR exposing 50k+ customer records.</div></div><div class="work-footer"><div class="work-tags"><span class="work-tag">SQLi</span><span class="work-tag">IDOR</span><span class="work-tag">Auth Bypass</span></div><span class="work-link">NDA</span></div></div>
+      <div class="work-card fade"><div class="work-banner">🏨</div><div class="work-body"><div class="work-type">FULL-STACK DEVELOPMENT</div><div class="work-title">Hospitality Business Platform</div><div class="work-desc">Company site with admin and staff dashboards for a liquor, hotel and bar business. Next.js, Tailwind, Supabase.</div></div><div class="work-footer"><div class="work-tags"><span class="work-tag">Next.js</span><span class="work-tag">Supabase</span><span class="work-tag">Tailwind</span></div><a href="https://github.com/vixylabs" class="work-link" target="_blank">GitHub</a></div></div>
+      <div class="work-card fade"><div class="work-banner">🦁</div><div class="work-body"><div class="work-type">WEB DEVELOPMENT</div><div class="work-title">Safari &amp; Tourism Platform</div><div class="work-desc">Tourism and safari booking platform for a Tanzania-based operator. Next.js/TypeScript with booking flows and admin panel.</div></div><div class="work-footer"><div class="work-tags"><span class="work-tag">Next.js</span><span class="work-tag">TypeScript</span><span class="work-tag">Booking</span></div><a href="https://github.com/vixylabs" class="work-link" target="_blank">GitHub</a></div></div>
+      <div class="work-card fade"><div class="work-banner">🎯</div><div class="work-body"><div class="work-type">RED TEAM ENGAGEMENT</div><div class="work-title">Financial Services Red Team Op</div><div class="work-desc">Full adversary simulation for a regional financial institution. Phishing, C2 deployment, lateral movement — full kill-chain, zero detection.</div></div><div class="work-footer"><div class="work-tags"><span class="work-tag">Phishing</span><span class="work-tag">C2</span><span class="work-tag">Lateral Mov</span></div><span class="work-link">NDA</span></div></div>
+      <div class="work-card fade"><div class="work-banner">🐛</div><div class="work-body"><div class="work-type">BUG BOUNTY</div><div class="work-title">HackerOne Program Findings</div><div class="work-desc">Active bug bounty across multiple programs. Critical authentication bypass and XSS vulnerabilities reported and acknowledged.</div></div><div class="work-footer"><div class="work-tags"><span class="work-tag">XSS</span><span class="work-tag">Auth Bypass</span><span class="work-tag">HackerOne</span></div><a href="https://github.com/Witton-431" class="work-link" target="_blank">Profile</a></div></div>
+      <div class="work-card fade"><div class="work-banner">🔐</div><div class="work-body"><div class="work-type">SECURITY AUDIT</div><div class="work-title">SaaS Platform Code Review</div><div class="work-desc">White-box review of a multi-tenant SaaS app. Identified tenant isolation failures, mass assignment vulns, and secrets in version control.</div></div><div class="work-footer"><div class="work-tags"><span class="work-tag">Code Review</span><span class="work-tag">Multi-tenant</span><span class="work-tag">Secrets</span></div><span class="work-link">NDA</span></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="seam"></div>
+
+<section id="contact">
+  <div class="sec-wrap">
+    <div class="contact-grid">
+      <div>
+        <div class="contact-left-eye fade">05. ENGAGEMENT DISPATCH<span style="color:var(--s600)"> · </span><span style="color:var(--s400)">INITIATE ASSESSMENT</span></div>
+        <h2 class="fade" style="font-family:var(--head);font-weight:800;font-size:clamp(1.6rem,2.5vw,2.4rem);letter-spacing:-.04em;color:#fff;margin-bottom:1rem;line-height:1.15">Start an engagement with Vixy Labs.</h2>
+        <p class="contact-left-desc fade">Whether you need an immediate black-box penetration test, a targeted adversary emulation, or hardened web/mobile engineering, we operate under strict confidentiality and standard mutual NDAs.</p>
+        <div class="contact-info-box fade">
+          <div class="cib-row"><span class="cib-key">Official Dispatch Email:</span><span class="cib-val"><a href="mailto:vixylabshq@gmail.com">vixylabshq@gmail.com <button class="cib-copy" onclick="copyEmail(this,event)" title="Copy">📋</button></a></span></div>
+          <div class="cib-row"><span class="cib-key">Encrypted PGP Key:</span><span class="cib-val">Available upon request</span></div>
+          <div class="cib-row"><span class="cib-key">Timezone / Location:</span><span class="cib-val">Tanzania (EAT UTC+3) · Global Ops</span></div>
+          <div class="cib-row"><span class="cib-key">Response SLA:</span><span class="cib-val tc">Within 12 hours</span></div>
+        </div>
+        <div class="safe-harbor fade">
+          <span class="sh-icon">🔒</span>
+          <div><div class="sh-title">Safe Harbor &amp; Ethical Scope</div><div class="sh-desc">All offensive testing is conducted strictly within authorized scope following written Rules of Engagement (RoE) and ethical disclosure guidelines.</div></div>
+        </div>
+      </div>
+      <div class="cform-wrap fade">
+        <form class="cform" id="cform" onsubmit="submitForm(event)">
+          <div class="frow">
+            <div class="fg"><label class="fl">Your Name / Org <span class="req">*</span></label><input class="finp" id="cf-name" type="text" placeholder="e.g. Alex Mercer / Fintech Co." required/></div>
+            <div class="fg"><label class="fl">Work Email <span class="req">*</span></label><input class="finp" id="cf-email" type="email" placeholder="alex@fintech.io" required/></div>
+          </div>
+          <div class="frow">
+            <div class="fg"><label class="fl">Primary Service</label><select class="fsel" id="cf-svc"><option>Penetration Testing</option><option>Red Teaming &amp; Adversary Simulation</option><option>Hardened Web Development</option><option>Secure Mobile Applications</option><option>Security Audits &amp; Code Review</option><option>Bug Bounty &amp; Vulnerability Disclosure</option></select></div>
+            <div class="fg"><label class="fl">Target Timeline</label><select class="fsel" id="cf-tl"><option>Immediate (Incident / Fast-Track)</option><option selected>Standard (2–3 weeks)</option><option>Next Month Planning</option><option>Ongoing Security Retainer</option></select></div>
+          </div>
+          <div class="fg"><label class="fl">Target Scope / Asset URLs</label><input class="finp" id="cf-scope" type="text" placeholder="e.g. *.domain.com, iOS test build, or GitHub repo"/></div>
+          <div class="fg"><label class="fl">Engagement Objectives &amp; Scope Details</label><textarea class="fta" id="cf-notes" placeholder="Describe your tech stack, compliance needs (SOC 2, ISO 27001, PCI-DSS), known concerns, or custom software requirements..."></textarea></div>
+          <button type="submit" class="fsub">📤 Dispatch Request to Vixy Labs</button>
+          <p class="fnote">Direct dispatch to vixylabshq@gmail.com · Strict Non-Disclosure Assured</p>
+        </form>
+        <div class="form-sent" id="form-sent">
+          <div class="form-sent-icon">✓</div>
+          <div class="form-sent-title">Inquiry Dispatched</div>
+          <div class="form-sent-desc">Your email client was opened with your pre-formatted project brief. Tony and the Vixy Labs team will review your scope and reply to <span class="form-sent-email" id="form-sent-email"></span> within 12 hours.</div>
+          <button class="form-reset" onclick="resetForm()">Submit Another Request</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <a href="#hero" class="footer-brand">
+          <img src="logo.png" alt="Vixy Labs"/>
+          <span class="footer-brand-name">VIXY<span>LABS</span></span>
+        </a>
+        <p class="footer-brand-desc">Tanzania-based offensive cybersecurity and hardened software development. We identify and neutralize critical vulnerabilities before adversaries strike.</p>
+        <div class="footer-brand-loc">Tanzania, East Africa · Offensive Cyber Operations · Global Scope</div>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-title">Core Capabilities</span>
+        <ul>
+          <li><a href="#services">Penetration Testing</a></li>
+          <li><a href="#services">Red Teaming</a></li>
+          <li><a href="#services">Hardened Web Dev</a></li>
+          <li><a href="#services">Secure Mobile Apps</a></li>
+          <li><a href="#services">AST Security Audits</a></li>
+          <li><a href="#services">Bug Bounty Management</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-title">Connect &amp; Deploy</span>
+        <ul>
+          <li><a href="https://github.com/vixylabs" target="_blank">🐙 github.com/vixylabs</a></li>
+          <li><a href="mailto:vixylabshq@gmail.com">✉️ vixylabshq@gmail.com</a></li>
+          <li><a href="https://vixylabs.github.io" target="_blank">🌐 vixylabs.github.io</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 Vixy Labs. Secure · Build · Innovate. All rights reserved.</div>
+      <div class="footer-bottom-right">
+        <span>Operating under strict Responsible Disclosure</span>
+        <button class="footer-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to Top ↑</button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const SVCS=[
+  {id:'pentest',title:'Penetration Testing',cat:'Offensive Security',icon:'🔓',desc:'Comprehensive offensive security assessments probing web applications, APIs, internal networks, and cloud environments to uncover critical vulnerabilities before adversaries do.',delivs:['Detailed Executive Summary with business risk impact rating','Step-by-step reproducible Proof-of-Concept exploit scripts','Direct developer-ready code fixes & remediation guidance','Free re-test validation within 30 days of remediation'],tools:['Burp Suite Pro','Nmap','Metasploit','Nuclei','SQLmap','Custom PoC Exploits'],outcomes:['Detailed Executive Summary with business risk impact rating','Step-by-step reproducible Proof-of-Concept exploit scripts']},
+  {id:'redteam',title:'Red Teaming & Adversary Simulation',cat:'Offensive Security',icon:'🎯',desc:'Multi-vector, goal-oriented cyber warfare simulation emulating real-world advanced persistent threats (APTs) to test your SOC, EDR detection, and incident response readiness.',delivs:['Comprehensive attack timeline matching SIEM/EDR logs','Blue team detection gap analysis & evasion debrief','Lateral movement, privilege escalation, and exfiltration maps','Strategic executive board security readiness presentation'],tools:['BloodHound','Impacket','Mimikatz','Mythic','Custom Implants','C2 Frameworks'],outcomes:['Comprehensive attack timeline matching SIEM/EDR logs','Blue team detection gap analysis & evasion debrief']},
+  {id:'webdev',title:'Hardened Web Development',cat:'Secure Engineering',icon:'🌐',desc:'Modern, high-performance web applications built from scratch with security-first architecture. Eliminating OWASP Top 10 flaws at the blueprint phase.',delivs:['Full-stack TypeScript / React / Node / Go architectures','Zero-Trust auth flows with hardened OAuth/OIDC & JWT','Rigorous CSP, rate limiting, and injection immunity','Automated CI/CD security linting & Dockerized deploy manifests'],tools:['React','Next.js','TypeScript','Node.js','PostgreSQL','Docker','Tailwind'],outcomes:['Full-stack TypeScript / React / Node / Go architectures','Zero-Trust auth flows with hardened OAuth/OIDC & JWT']},
+  {id:'mobile',title:'Secure Mobile Applications',cat:'Secure Engineering',icon:'📱',desc:'Enterprise-grade iOS and Android mobile apps engineered with cryptographic storage, anti-tampering, biometric authentication, and certificate pinning.',delivs:['Native & Cross-platform apps (React Native / Kotlin / Swift)','OWASP MASVS (Mobile App Security Verification Standard) aligned','Jailbreak / Root detection and binary code obfuscation','Encrypted local storage with hardware keystore integration'],tools:['React Native','Kotlin','Swift','Android NDK','Frida','MobSF'],outcomes:['Native & Cross-platform apps (React Native / Kotlin / Swift)','OWASP MASVS aligned build process']},
+  {id:'audit',title:'Security Audits & Code Review',cat:'Offensive Security',icon:'🛡️',desc:'Line-by-line manual source code inspection and architectural security reviews targeting subtle logic flaws, authorization loopholes, and cryptography mistakes.',delivs:['Static & dynamic AST code taint analysis (SAST/DAST)','Third-party dependency & supply chain vulnerability audit','Cloud configuration & IAM least-privilege security audit','Prioritized CVSS v3.1 matrix with actionable patches'],tools:['Semgrep','SonarQube','TruffleHog','Checkov','AST Analyzers'],outcomes:['Static & dynamic AST code taint analysis (SAST/DAST)','Third-party dependency & supply chain vulnerability audit']},
+  {id:'bugbounty',title:'Bug Bounty & Vulnerability Disclosure',cat:'Offensive Security',icon:'🐛',desc:'End-to-end vulnerability coordination and triage. We design your vulnerability disclosure policy (VDP), filter junk reports, and validate genuine researcher submissions.',delivs:['Tailored VDP documentation & safe harbor guidelines','Fast 24-hour researcher triage and exploit reproduction','Duplicate and spam filtering saving your internal team hours','Bounty reward recommendation based on actual CVSS impact'],tools:['HackerOne / Bugcrowd Integration','CVSS Calculators','Custom Triage Engine'],outcomes:['Tailored VDP documentation & safe harbor guidelines','Fast 24-hour researcher triage and exploit reproduction']}
+];
+
+let activeFilter='all',activeSvc=null;
+
+const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');observer.unobserve(e.target)}}),{threshold:.1});
+
+function renderSvcs(){
+  const grid=document.getElementById('svc-grid');
+  const list=activeFilter==='all'?SVCS:SVCS.filter(s=>s.cat===activeFilter);
+  grid.innerHTML=list.map((s,i)=>`
+    <div class="svc-card fade" style="transition-delay:${i*0.07}s">
+      <div>
+        <div class="svc-card-top"><div class="svc-icon-box">${s.icon}</div><span class="svc-category">${s.cat}</span></div>
+        <h3 class="svc-title">${s.title}</h3>
+        <p class="svc-desc">${s.desc}</p>
+        <div class="svc-outcomes">
+          <span class="svc-out-label">Key Outcomes:</span>
+          ${s.outcomes.map(o=>`<div class="svc-out-item"><span class="svc-out-check">✓</span><span>${o}</span></div>`).join('')}
+        </div>
+      </div>
+      <div class="svc-card-footer">
+        <button class="svc-detail-btn" onclick="openModal('${s.id}')">View Scope &amp; Tech</button>
+        <button class="svc-book-btn" onclick="bookSvc('${s.id}')">Book Service &rarr;</button>
+      </div>
+    </div>`).join('');
+  grid.querySelectorAll('.fade').forEach(el=>{setTimeout(()=>observer.observe(el),50)});
+}
+renderSvcs();
+document.querySelectorAll('.fade').forEach(el=>observer.observe(el));
+
+document.querySelectorAll('.sfc-btn').forEach(b=>b.addEventListener('click',function(){
+  document.querySelectorAll('.sfc-btn').forEach(x=>x.classList.remove('active'));
+  this.classList.add('active');activeFilter=this.dataset.filter;renderSvcs();
+}));
+
+function openModal(id){
+  const s=SVCS.find(x=>x.id===id);if(!s)return;activeSvc=s;
+  document.getElementById('modal-icon').textContent=s.icon;
+  document.getElementById('modal-cat').textContent=s.cat;
+  document.getElementById('modal-title').textContent=s.title;
+  document.getElementById('modal-desc').textContent=s.desc;
+  document.getElementById('modal-delivs').innerHTML=s.delivs.map(d=>`<div class="modal-deliv-item"><span style="color:var(--teal);flex-shrink:0">✓</span><span>${d}</span></div>`).join('');
+  document.getElementById('modal-tools').innerHTML=s.tools.map(t=>`<span class="modal-tool">${t}</span>`).join('');
+  document.getElementById('svc-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('svc-modal').classList.remove('open');document.body.style.overflow='';activeSvc=null}
+document.getElementById('modal-close-btn').onclick=closeModal;
+document.getElementById('modal-cancel-btn').onclick=closeModal;
+document.getElementById('modal-book-btn').onclick=()=>{if(activeSvc)bookSvc(activeSvc.id);closeModal()};
+document.getElementById('svc-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
+
+const SVC_TO_OPTION={pentest:'Penetration Testing',redteam:'Red Teaming & Adversary Simulation',webdev:'Hardened Web Development',mobile:'Secure Mobile Applications',audit:'Security Audits & Code Review',bugbounty:'Bug Bounty & Vulnerability Disclosure'};
+function bookSvc(id){
+  const sel=document.getElementById('cf-svc');
+  if(sel&&SVC_TO_OPTION[id])sel.value=SVC_TO_OPTION[id];
+  goTo('#contact');
+}
+
+/* CURSOR */
+const cg=document.getElementById('cg'),cd=document.getElementById('cd');
+const mouse={x:-1e3,y:-1e3},cur={x:-1e3,y:-1e3};
+let cgVis=false;
+document.addEventListener('pointermove',e=>{
+  mouse.x=e.clientX;mouse.y=e.clientY;
+  if(!cgVis){cgVis=true;cg.style.opacity='1';cd.style.opacity='.8'}
+  const t=e.target;
+  const hov=t&&t.closest&&t.closest('button,a,input,select,textarea,[role=button],.svc-card');
+  cg.classList.toggle('hov',!!hov);cd.classList.toggle('hov',!!hov);
+},{passive:true});
+document.addEventListener('mouseleave',()=>{cg.style.opacity='0';cd.style.opacity='0';cgVis=false});
+(function loop(){
+  cur.x+=(mouse.x-cur.x)*.16;cur.y+=(mouse.y-cur.y)*.16;
+  cg.style.transform=`translate3d(${cur.x}px,${cur.y}px,0) translate(-50%,-50%)`;
+  cd.style.transform=`translate3d(${mouse.x}px,${mouse.y}px,0) translate(-50%,-50%)`;
+  requestAnimationFrame(loop);
+})();
+
+/* SCROLL PROGRESS */
+const sections=[
+  ['#hero','00. RECON HERO'],['#services','01. SERVICES'],
+  ['#methodology','02. DOCTRINE'],['#scope','03. SCOPING'],
+  ['#term-sec','04. CONSOLE'],['#about','05. ORIGIN HQ'],
+  ['#work','06. WORK'],['#contact','07. DISPATCH']
+];
+window.addEventListener('scroll',()=>{
+  const max=document.documentElement.scrollHeight-window.innerHeight;
+  const p=max>0?window.scrollY/max:0;
+  document.getElementById('spbar').style.width=(p*100)+'%';
+  document.getElementById('sp-pct').textContent=Math.round(p*100)+'%';
+  const sy=window.scrollY+120;
+  for(let i=sections.length-1;i>=0;i--){
+    const el=document.querySelector(sections[i][0]);
+    if(el&&el.offsetTop<=sy){document.getElementById('sp-sec').textContent=sections[i][1];break}
+  }
+},{passive:true});
+
+/* NAV */
+function goTo(sel){const el=document.querySelector(sel);if(el)el.scrollIntoView({behavior:'smooth'})}
+const hbg=document.getElementById('hbg'),mob=document.getElementById('mob-menu');
+hbg.addEventListener('click',()=>{hbg.classList.toggle('open');mob.classList.toggle('open')});
+function closeMob(){hbg.classList.remove('open');mob.classList.remove('open')}
+
+/* RADAR */
+function runRadar(){
+  const path=document.getElementById('radar-path');
+  const nodes=document.querySelectorAll('.rnode');
+  const len=path.getTotalLength();
+  path.style.strokeDasharray=len;
+  path.style.strokeDashoffset=len;
+  nodes.forEach(n=>{n.style.transition='none';n.style.opacity='0'});
+  let start=null;
+  function animPath(ts){
+    if(!start)start=ts;
+    const prog=Math.min((ts-start)/2200,1);
+    path.style.strokeDashoffset=len*(1-prog);
+    if(prog<1)requestAnimationFrame(animPath);
+    else animNodes();
+  }
+  function animNodes(){
+    nodes.forEach((n,i)=>{
+      setTimeout(()=>{n.style.transition='opacity .4s ease';n.style.opacity='1'},i*140+300);
+    });
+  }
+  requestAnimationFrame(animPath);
+}
+document.getElementById('radar-btn').onclick=runRadar;
+setTimeout(runRadar,600);
+
+/* SCOPE ESTIMATOR */
+let sSvc='Web Application Penetration Test',sBox='Grey Box',sScale='Focused',sUrg='Standard';
+const boxHints={'Grey Box':'Industry gold standard: Testing with authenticated credentials replicating malicious insider or compromised user.','Black Box':'Zero prior knowledge: Simulating an external opportunistic attacker or advanced threat actor.','White Box':'Full visibility: Includes source code AST inspection, architecture diagrams, and API specifications.'};
+function getTL(){if(sUrg==='Emergency')return'48 – 72 Hours (24/7 Red Team Sprint)';if(sScale==='Focused')return'3 – 5 Business Days';if(sScale==='Standard')return'7 – 12 Business Days';return'14 – 21 Business Days'}
+function updateScope(){
+  document.getElementById('sr-title').textContent=sSvc;
+  const urg=sUrg==='Standard'?sUrg:`<span class="tc">${sUrg}</span>`;
+  document.getElementById('sr-meta').innerHTML=`${sBox} &bull; ${sScale} Footprint &bull; ${urg}`;
+  document.getElementById('sr-tl').textContent=getTL();
+  document.getElementById('sr-wb').style.display=sBox==='White Box'?'flex':'none';
+  document.getElementById('box-hint').textContent=boxHints[sBox];
+}
+function bindGroup(sel,key,setter){
+  document.querySelectorAll(sel+' .scope-btn').forEach(b=>b.addEventListener('click',function(){
+    document.querySelectorAll(sel+' .scope-btn').forEach(x=>x.classList.remove('active'));
+    this.classList.add('active');setter(this.dataset[key]);updateScope();
+  }));
+}
+bindGroup('#scope-svc-opts','svc',v=>sSvc=v);
+bindGroup('#scope-box-opts','box',v=>sBox=v);
+bindGroup('#scope-scale-opts','scale',v=>sScale=v);
+bindGroup('#scope-urg-opts','urg',v=>sUrg=v);
+document.getElementById('scope-apply').addEventListener('click',()=>{
+  const ta=document.getElementById('cf-notes');
+  if(ta)ta.value=`${sSvc} (${sBox}, ${sScale} Scope, ${sUrg} Delivery)`;
+  goTo('#contact');
+});
+
+/* TERMINAL */
+const PRESETS={
+  recon:{cmd:'vixy-recon --target enterprise.io --ports all --subdomains active',output:[['lo','[+] Initializing Vixy Labs Recon Engine v2.4 (x86_64)'],['li','[*] Target: enterprise.io (Resolved IP: 198.51.100.42)'],['lo','[+] Enumerating DNS records, subdomains & certificates...'],['ln','    - api.enterprise.io [HTTP 200 - Express/4.19 / JWT Auth exposed]'],['la','    - staging-internal.enterprise.io [HTTP 401 - NGINX 1.18 vulnerable]'],['la','    - auth-v2.enterprise.io [HTTP 200 - OAuth callback misconfiguration detected]'],['li','[!] PORT 22/tcp SSH OpenSSH 8.2p1, PORT 443/tcp HTTPS TLS 1.3, PORT 8443/tcp Admin Console'],['lo','[✓] Attack surface mapped: 3 critical vectors flagged for deep penetration testing.']]},
+  redteam:{cmd:'redteam-sim --tactics MITRE-ATTACK --profile APT-Advanced',output:[['li','[*] Loading MITRE ATT&CK: T1190 (Exploit Public-Facing App), T1078 (Valid Accounts)'],['lo','[+] Simulating external intrusion pathway...'],['ln','    [T1190] Deserialization endpoint probed -> Filter bypassed via custom polyglot'],['ln','    [T1059] Execution vector isolated -> Host privilege escalation simulated'],['la','    [T1003] Credential dumping triggered -> EDR telemetry recorded & analyzed'],['la','[!] Red Team: EDR bypassed via unmonitored memory injection vector'],['lo','[✓] Full adversarial breach report compiled with proof-of-concept mitigation patches.']]},
+  audit:{cmd:'vixy-audit --repo github.com/vixylabs/core --depth ast-taint',output:[['li','[*] Parsing AST trees across 142 source files (TypeScript / Go / Rust)...'],['lo','[+] Taint analysis running: Source -> Sink verification'],['ln','    - SQL injection: 0 vulnerabilities (Parameterized ORM verified)'],['la','    - IDOR / Access Control: 1 authorization flaw in /api/v1/tenant/billing'],['ln','    - Cryptography: AES-256-GCM enforced, zero hardcoded keys found'],['lo','[✓] Security baseline: PASSED. Hardened code ready for production deployment.']]}
+};
+const CMDS={
+  help:[['ln','Vixy Labs Interactive Console — Available Commands:'],['ln','  services    — View our 6 core cybersecurity & development services'],['ln','  recon       — Run attack surface reconnaissance simulation'],['ln','  redteam     — Run MITRE ATT&CK adversary emulation'],['ln','  audit       — Run secure code audit & AST check'],['ln','  whoami      — Display operator credentials & origin'],['ln','  contact     — Get direct engagement dispatch info'],['ln','  clear       — Clear terminal screen']],
+  services:[['ln','VIXY LABS CORE SERVICES:'],['lo','1. Penetration Testing   — Web Apps, APIs, Network, Cloud & AD'],['lo','2. Red Teaming           — Goal-oriented adversary simulation & defense evasion'],['lo','3. Web Development       — Hardened, high-performance web systems'],['lo','4. Mobile Apps           — Encrypted, secure iOS & Android engineering'],['lo','5. Security Audits       — Deep source code review & architecture audits'],['lo','6. Bug Bounty            — Coordinated disclosure & vulnerability triage']],
+  whoami:[['lo','Operator: Tony (Lead Security Researcher & Red Teamer)'],['ln','Specialization: Adversary Simulation & Offensive Security'],['ln','Headquarters: Tanzania, East Africa'],['lo','Company: Vixy Labs (Secure · Build · Innovate)'],['li','GitHub: github.com/Witton-431'],['li','Org: github.com/vixylabs']],
+  contact:[['lo','Direct Inquiries: vixylabshq@gmail.com'],['li','GitHub: https://github.com/vixylabs'],['li','Web: https://vixylabs.github.io'],['ln','Status: Open for pentest engagements and security engineering projects.']]
+};
+let termHistory=[];
+function ts(){return new Date().toTimeString().split(' ')[0]}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function pushEntry(cmd,lines){termHistory.push({cmd,lines,t:ts()});renderTerm()}
+function renderTerm(){
+  const body=document.getElementById('term-body');
+  const welcome=body.querySelector('.term-welcome');
+  const wc=welcome?welcome.cloneNode(true):null;
+  body.innerHTML='';
+  if(wc)body.appendChild(wc);
+  for(const item of termHistory){
+    const e=document.createElement('div');e.className='term-entry';
+    const cl=document.createElement('div');cl.className='term-cmdline';
+    cl.innerHTML=`<span class="term-prompt">vixy@offensive-node:~#</span><span class="term-cmd">${esc(item.cmd)}</span><span class="term-ts">${item.t}</span>`;
+    e.appendChild(cl);
+    const out=document.createElement('div');out.className='term-output';
+    for(const [cls,txt] of item.lines){const d=document.createElement('div');d.className=cls;d.textContent=txt;out.appendChild(d)}
+    e.appendChild(out);body.appendChild(e);
+  }
+  body.scrollTop=body.scrollHeight;
+}
+function clearTerm(){termHistory=[];renderTerm()}
+function runPreset(id){
+  const p=PRESETS[id];
+  document.querySelectorAll('.ttab').forEach(b=>b.classList.toggle('active',b.dataset.preset===id));
+  pushEntry(p.cmd,p.output);
+}
+document.querySelectorAll('.ttab').forEach(b=>b.addEventListener('click',()=>runPreset(b.dataset.preset)));
+function runCmd(e){
+  if(e)e.preventDefault();
+  const inp=document.getElementById('term-input');
+  const val=inp.value.trim();if(!val)return;
+  inp.value='';document.getElementById('term-run').disabled=true;
+  const lo=val.toLowerCase();
+  if(lo==='clear'){clearTerm();return}
+  if(lo in PRESETS){pushEntry(PRESETS[lo].cmd,PRESETS[lo].output);return}
+  if(lo in CMDS){pushEntry(val,CMDS[lo]);return}
+  pushEntry(val,[['la',`bash: command not found: ${val}`],['ln','Type "help" to view available commands or click a preset tab above.']]);
+}
+document.getElementById('term-input').addEventListener('input',function(){document.getElementById('term-run').disabled=!this.value.trim()});
+runPreset('recon');
+
+/* CONTACT FORM */
+function copyEmail(btn,ev){
+  if(ev){ev.preventDefault();ev.stopPropagation()}
+  navigator.clipboard.writeText('vixylabshq@gmail.com').then(()=>{const o=btn.textContent;btn.textContent='✅';setTimeout(()=>btn.textContent=o,2000)});
+}
+function submitForm(e){
+  e.preventDefault();
+  const g=id=>document.getElementById(id).value;
+  const name=g('cf-name'),email=g('cf-email'),svc=g('cf-svc'),tl=g('cf-tl'),scope=g('cf-scope'),notes=g('cf-notes');
+  const sub=encodeURIComponent(`[Vixy Labs Engagement Inquiry] ${svc} - ${name}`);
+  const body=encodeURIComponent(`Vixy Labs Engagement Request\n--------------------------------\nClient Name / Org: ${name}\nContact Email: ${email}\nRequested Service: ${svc}\nTarget Scope / Assets: ${scope||'To be specified under NDA'}\nTarget Timeline: ${tl}\n\nProject Details & Scope Notes:\n${notes}\n\n--------------------------------\nSent via Vixy Labs Portal (vixylabs.github.io)`);
+  window.location.href=`mailto:vixylabshq@gmail.com?subject=${sub}&body=${body}`;
+  document.getElementById('form-sent-email').textContent=email;
+  document.getElementById('cform').style.display='none';
+  document.getElementById('form-sent').style.display='block';
+}
+function resetForm(){const f=document.getElementById('cform');f.style.display='flex';f.reset();document.getElementById('form-sent').style.display='none'}
+</script>
 </body>
 </html>
